@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Shell
+    x:Class="Kopilych.Mobile.AppShell"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:local="clr-namespace:Kopilych.Mobile"
+    xmlns:views="clr-namespace:Kopilych.Mobile.Views"
+    Shell.FlyoutBehavior="Disabled"
+    Title="Kopilych.Mobile">
+
+    <TabBar>
+        <ShellSection Title="Копилки" Icon="home_icon.png">
+            <ShellContent
+                Title="Копилки"
+                ContentTemplate="{DataTemplate views:PiggyBanksGalleryPageView}"
+                Route="PiggyBanksGallery" />
+        </ShellSection>
+        <ShellSection Title="Профиль" Icon="home_icon.png">
+            <ShellContent
+         Title="Профиль"
+         ContentTemplate="{DataTemplate views:PiggyBanksGalleryPageView}"
+         Route="MainPage1" />
+        </ShellSection>
+        <ShellSection Title="Тест копилка" Icon="home_icon.png">
+            <ShellContent
+      Title="Тест копилка"
+      ContentTemplate="{DataTemplate views:PiggyBankPageView}"
+               
+      Route="PiggyBankTest" />
+        </ShellSection>
+    </TabBar>
+
+
+</Shell>

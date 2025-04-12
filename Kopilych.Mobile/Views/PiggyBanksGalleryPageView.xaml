@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Kopilych.Mobile.Views.PiggyBanksGalleryPageView"
+             xmlns:views="clr-namespace:Kopilych.Mobile.Views"
+             xmlns:models="clr-namespace:Kopilych.Mobile.Models"
+             Title="Копилки">
+
+    <StackLayout  Orientation="Vertical" >
+        <Grid BackgroundColor="White" HorizontalOptions="FillAndExpand">
+            <StackLayout Padding="10" Orientation="Horizontal" BackgroundColor="White"  VerticalOptions="FillAndExpand">
+
+                <Label Text="Персональные" FontSize="20" HorizontalOptions="Center" VerticalOptions="Center"/>
+                <Frame Margin="10,0,0,0" BackgroundColor="White" BorderColor="White" CornerRadius="100" WidthRequest="30" HeightRequest="30" Padding="5">
+                    <Frame BackgroundColor="White" BorderColor="White" CornerRadius="10000" Padding="0">
+                        <Image x:Name="PersonalPiggyBanksVisibilityImage" Source="expand.svg"/>
+
+                    </Frame>
+                </Frame>
+            </StackLayout>
+            <Button BackgroundColor="Transparent" Command="{Binding TogglePersonalPiggyBanksVisibility}"></Button>
+        </Grid>
+        <CollectionView ItemsSource="{Binding PiggyBankCardsViewModels}" IsVisible="{Binding IsPersonalPiggyBanksVisible}" BackgroundColor ="Transparent" HorizontalOptions="Fill">
+            <CollectionView.ItemsLayout>
+                <GridItemsLayout Span="2" Orientation="Vertical"/>
+            </CollectionView.ItemsLayout>
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <views:PiggyBankCardView/>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+
+
+
+        <Grid BackgroundColor="White" HorizontalOptions="FillAndExpand">
+            <StackLayout Padding="10" Orientation="Horizontal" BackgroundColor="White"  VerticalOptions="FillAndExpand">
+
+                <Label Text="Групповые" FontSize="20" HorizontalOptions="Center" VerticalOptions="Center"/>
+                <Frame Margin="10,0,0,0" BackgroundColor="White" BorderColor="White" CornerRadius="100" WidthRequest="30" HeightRequest="30" Padding="5">
+                    <Frame BackgroundColor="White" BorderColor="White" CornerRadius="10000" Padding="0">
+                        <Image x:Name="GroupPiggyBanksVisibilityImage" Source="expand.svg"/>
+
+                    </Frame>
+                </Frame>
+            </StackLayout>
+            <Button BackgroundColor="Transparent" Command="{Binding ToggleGroupPiggyBanksVisibility}"></Button>
+        </Grid>
+
+
+    </StackLayout>
+
+</ContentPage>

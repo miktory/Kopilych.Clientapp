@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewmodels="clr-namespace:Kopilych.Mobile.View_Models"
+             x:Class="Kopilych.Mobile.Views.TransactionView">
+
+    <Frame HeightRequest="90" Padding="0" HasShadow="True" BorderColor="Transparent">
+        <Frame.Shadow>
+            <Shadow Brush="Black"
+          Offset="0,2"
+          Radius="10"
+          Opacity="0.5" />
+        </Frame.Shadow>
+        <Grid Padding="20,10,10,10">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="20"/>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="20" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="0.50*"/>
+                <ColumnDefinition Width="0.20*"/>
+                <ColumnDefinition Width="0.30*"/>
+            </Grid.ColumnDefinitions>
+            <Label Text="{Binding OperationDescription}" FontFamily="NunitoExtraBold" FontAttributes="Bold" FontSize="14" LineBreakMode="TailTruncation" TextColor="#13BE13" HorizontalOptions="StartAndExpand" Grid.ColumnSpan="2" Grid.Row="0"></Label>
+            <Label Text="{Binding Amount}" LineBreakMode="TailTruncation" FontFamily="NunitoExtraBold" FontAttributes="Bold" FontSize="14" TextColor="#13BE13" HorizontalOptions="EndAndExpand" Grid.Column="2" Grid.Row="0"></Label>
+            <Label Margin="0,5,0,5" FontFamily="NunitoSemiBold" Text="{Binding Description}" LineBreakMode="TailTruncation"   FontSize="10" TextColor="Black" VerticalOptions="StartAndExpand" HorizontalOptions="StartAndExpand" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="1"></Label>
+            <StackLayout IsClippedToBounds="True" Orientation="Horizontal" HorizontalOptions="FillAndExpand" Grid.Column="0" Grid.Row="2" Spacing="5" VerticalOptions="FillAndExpand">
+                <Image Source="{Binding UserPhotoPath}" HeightRequest="20" HorizontalOptions="Start" VerticalOptions="CenterAndExpand"></Image>
+                <Label Text="{Binding Username}" FontFamily="NunitoBold" LineBreakMode="TailTruncation" FontSize="12" HorizontalOptions="StartAndExpand" VerticalOptions="CenterAndExpand" TextColor="White" ></Label>
+            </StackLayout>
+            <Label Text="{Binding Date}" FontFamily="NunitoBold"  Grid.Column="2" Grid.Row="2" LineBreakMode="TailTruncation" FontSize="12" VerticalOptions="CenterAndExpand" TextColor="White" HorizontalOptions="EndAndExpand"></Label>
+
+
+        </Grid>
+        <Frame.Background>
+            <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                <GradientStop Color="White" Offset="0.0" />
+
+                <GradientStop Color="White" Offset="0.9" />
+                <!-- Белый цвет сверху -->
+                <GradientStop Color="#13BE13" Offset="1" />
+            </LinearGradientBrush>
+        </Frame.Background>
+    </Frame>
+</ContentView>

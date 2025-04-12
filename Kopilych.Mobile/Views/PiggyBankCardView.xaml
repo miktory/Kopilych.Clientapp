@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:pr="clr-namespace:MPowerKit.ProgressRing;assembly=MPowerKit.ProgressRing"
+             xmlns:viewmodels="clr-namespace:Kopilych.Mobile.View_Models"
+             x:Class="Kopilych.Mobile.Views.PiggyBankCardView">
+  
+    <ContentView.BindingContext>
+        <viewmodels:PiggyBankCardViewModel x:Name="ViewModel" />
+    </ContentView.BindingContext>
+
+    <VerticalStackLayout Padding="0">
+        <Frame x:Name="Card" Padding="0" WidthRequest="150" HeightRequest="150" BorderColor="Transparent">
+
+            <Grid>
+                <Frame Margin ="15" BackgroundColor="Transparent" CornerRadius="1000" Padding="0">
+                    <Image BackgroundColor="Transparent" Aspect="AspectFill" Source="{Binding PhotoPath}">
+
+                    </Image>
+                </Frame>
+                <pr:ProgressRing x:Name="BalancePercentage"
+
+Progress="{Binding FillLevel}"
+IsIndeterminate="False"
+Smooth="True"
+WidthRequest="150"
+HeightRequest="150"
+StrokeLineCap="Square"
+Color="Green" 
+Thickness="10" />
+            </Grid>
+
+        </Frame>
+        <Label Text="{Binding Name}" HorizontalOptions="Center" VerticalOptions="Center" Margin="0,10,0,0"/>
+    </VerticalStackLayout>
+
+
+
+</ContentView>
