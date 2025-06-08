@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Kopilych.Mobile.Views.UserSettingsPageView"
+             xmlns:views="clr-namespace:Kopilych.Mobile.Views"
+             xmlns:viewmodels="clr-namespace:Kopilych.Mobile.View_Models"
+             Title="Профиль"
+             >
+    <ContentPage.Resources>
+        <Style x:Key="RevertSessionExistStatusFrameStyle" TargetType="Frame">
+            <Style.Triggers>
+                <DataTrigger TargetType="Frame" Binding="{Binding IsSessionExists}" Value="true">
+                    <Setter Property="IsVisible" Value="false"/>
+                </DataTrigger>
+                <DataTrigger TargetType="Frame" Binding="{Binding IsSessionExists}" Value="false">
+                    <Setter Property="IsVisible" Value="true"/>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+    </ContentPage.Resources>
+
+
+    <Grid Padding="0"  VerticalOptions="StartAndExpand" RowDefinitions="Auto,Auto,Auto, *" BackgroundColor="Transparent" RowSpacing="0">
+        <Frame Padding="10" BackgroundColor="Transparent" BorderColor="Transparent" Grid.Row="0">
+            <Image x:Name="Logo" Source="logo1.png" WidthRequest="65" HeightRequest="65"/>
+        </Frame>
+        <views:UserInfoCardView BindingContext="{Binding UserInfoCardViewModel}" Padding="10,1,10,1" Grid.Row="1"/>
+
+        <RefreshView Grid.Row="3" Padding="0" Margin="0,20,0,0" Command="{Binding RefreshDataCommand}" IsRefreshing="{Binding IsRefreshing}">
+            <ScrollView Padding="0">
+
+
+                <StackLayout BackgroundColor="Transparent" Padding="10,1,10,1" Spacing="10">
+                    <Frame BackgroundColor="White" HasShadow="True" Padding="0" CornerRadius="3000" IsVisible="{Binding IsSessionExists}">
+                        <Frame.Shadow>
+                            <Shadow Brush="Black"
+Offset="0,2"
+Radius="5"
+Opacity="0.5" />
+                        </Frame.Shadow>
+                        <Grid Padding="0"  VerticalOptions="Fill" HorizontalOptions="Fill" ColumnDefinitions="*" >
+                            <Button BackgroundColor="Transparent" Grid.Column="0" Grid.ColumnSpan="2" Command="{Binding OpenFriendlistCommand}"/>
+                            <Grid ColumnDefinitions="Auto, *" Grid.Column="0" Padding="10" ColumnSpacing="15">
+                                <Frame BackgroundColor="LightGray" BorderColor="Transparent" Padding="5" Grid.Column="0" WidthRequest="30" HeightRequest="30" CornerRadius="1000">
+                                    <Image HorizontalOptions="Center" Aspect="AspectFit" Source="friends_2.svg" BackgroundColor="Transparent"/>
+                                </Frame>
+                                <Label Text="Друзья" Grid.Column="1" TextColor="Black" HorizontalOptions="Start" LineBreakMode="WordWrap" VerticalOptions="Center" FontFamily="NunitoBold" FontSize="18"     />
+                            </Grid>
+                        </Grid>
+                    </Frame>
+
+                    <Frame BackgroundColor="White" HasShadow="True" Padding="0" CornerRadius="3000" Style="{StaticResource RevertSessionExistStatusFrameStyle}">
+                        <Frame.Shadow>
+                            <Shadow Brush="Black"
+Offset="0,2"
+Radius="5"
+Opacity="0.5" />
+                        </Frame.Shadow>
+                        <Grid Padding="0"  VerticalOptions="Fill" HorizontalOptions="Fill" ColumnDefinitions="*" >
+                            <Button BackgroundColor="Transparent" Grid.Column="0" Grid.ColumnSpan="2" Command="{Binding OpenAuthPageCommand}"/>
+                            <Grid ColumnDefinitions="Auto, *" Grid.Column="0" Padding="10" ColumnSpacing="15">
+                                <Frame BackgroundColor="White" BorderColor="Transparent" Padding="0" Grid.Column="0" WidthRequest="30" HeightRequest="30" CornerRadius="1000">
+                                    <Image HorizontalOptions="Center" Aspect="AspectFit" Source="sign_in.svg" BackgroundColor="Transparent" AutomationProperties.IsInAccessibleTree="False"/>
+                                </Frame>
+                                <Label Text="Войти в систему" Grid.Column="1" TextColor="Black" HorizontalOptions="Start" LineBreakMode="WordWrap" VerticalOptions="Center" FontFamily="NunitoBold" FontSize="18"     />
+                            </Grid>
+                        </Grid>
+                    </Frame>
+
+                    <Frame BackgroundColor="White" HasShadow="True" Padding="0" CornerRadius="3000" IsVisible="{Binding IsSessionExists}">
+                        <Frame.Shadow>
+                            <Shadow Brush="Black"
+Offset="0,2"
+Radius="5"
+Opacity="0.5" />
+                        </Frame.Shadow>
+                        <Grid Padding="0"  VerticalOptions="Fill" HorizontalOptions="Fill" ColumnDefinitions="*" >
+                            <Button BackgroundColor="Transparent" Grid.Column="0" Grid.ColumnSpan="2" Command="{Binding LogoutCommand}"/>
+                            <Grid ColumnDefinitions="Auto, *" Grid.Column="0" Padding="10" ColumnSpacing="15">
+                                <Frame BackgroundColor="Blue" BorderColor="Transparent" Padding="6" WidthRequest="30" HeightRequest="30" CornerRadius="1000">
+                                    <Image HorizontalOptions="Center" Aspect="AspectFit" Source="sign_out.svg" BackgroundColor="Transparent" AutomationProperties.IsInAccessibleTree="False"/>
+                                </Frame>
+                                <Label Text="Выйти из системы" Grid.Column="1" TextColor="Black" HorizontalOptions="Start" LineBreakMode="WordWrap" VerticalOptions="Center" FontFamily="NunitoBold" FontSize="18"     />
+                            </Grid>
+                        </Grid>
+                    </Frame>
+
+                    <Frame BackgroundColor="Red" HasShadow="True" Padding="0" CornerRadius="3000" IsVisible="{Binding IsSessionExists}">
+                        <Frame.Shadow>
+                            <Shadow Brush="Black"
+Offset="0,2"
+Radius="5"
+Opacity="0.5" />
+                        </Frame.Shadow>
+                        <Grid Padding="0"  VerticalOptions="Fill" HorizontalOptions="Fill" ColumnDefinitions="*" >
+                            <Button BackgroundColor="Transparent" Grid.Column="0" Grid.ColumnSpan="2" Command="{Binding CreateTransactionCommand}"/>
+                            <Grid ColumnDefinitions="Auto, *" Grid.Column="0" Padding="10" ColumnSpacing="15">
+                            <Frame BackgroundColor="White" BorderColor="Transparent" Padding="6" Grid.Column="0" WidthRequest="30" HeightRequest="30" CornerRadius="1000">
+                                <Image HorizontalOptions="Center" Aspect="AspectFit" Source="trashbox.svg" BackgroundColor="Transparent" AutomationProperties.IsInAccessibleTree="False"/>
+                            </Frame>
+                            <Label Text="Удалить данные с сервера" Grid.Column="1" TextColor="White" HorizontalOptions="Start" LineBreakMode="WordWrap" VerticalOptions="Center" FontFamily="NunitoBold" FontSize="18"     />
+                            </Grid>
+                        </Grid>
+                    </Frame>
+                </StackLayout>
+            </ScrollView>
+        </RefreshView>
+    </Grid>
+
+
+</ContentPage>

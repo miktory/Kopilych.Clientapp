@@ -15,7 +15,9 @@ namespace Kopilych.Domain
 		public DateTime Created { get; set; }
 		public DateTime Updated { get; set; }
 		public int Version { get; set; }
-		public virtual User Owner { get; set; }
+        public int? ExternalId { get; set; }
+        public bool? IsDeleted { get; set; }
+        public virtual User Owner { get; set; }
 		public virtual PiggyBankCustomization Customization { get; set; }
         public virtual IEnumerable<UserPiggyBank> Members { get; set; }
         // свойство public вынести в UserAndBankLink

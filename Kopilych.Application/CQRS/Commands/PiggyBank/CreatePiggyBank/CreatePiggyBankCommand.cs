@@ -12,6 +12,7 @@ namespace Kopilych.Application.CQRS.Commands.PiggyBank.CreatePiggyBank
     {
         public int OwnerId { get; set; }
         public int Version { get; set; }
+        public int? ExternalId { get; set; }
         public decimal Balance { get; set; }
         public decimal? Goal { get; set; }
         public string Name { get; set; }

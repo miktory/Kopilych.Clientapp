@@ -21,6 +21,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kopilych.Persistence", "..\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kopilych.Shared", "..\Kopilych.Shared\Kopilych.Shared.csproj", "{A6260F9C-3926-4928-883B-276C93182C37}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kopilych.ExternalCommunication", "..\Kopilych.ExternalCommunication\Kopilych.ExternalCommunication.csproj", "{8FA7CF43-2FC4-4A74-B48B-70D2544B0564}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -49,6 +51,10 @@ Global
 		{A6260F9C-3926-4928-883B-276C93182C37}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A6260F9C-3926-4928-883B-276C93182C37}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A6260F9C-3926-4928-883B-276C93182C37}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8FA7CF43-2FC4-4A74-B48B-70D2544B0564}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8FA7CF43-2FC4-4A74-B48B-70D2544B0564}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8FA7CF43-2FC4-4A74-B48B-70D2544B0564}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8FA7CF43-2FC4-4A74-B48B-70D2544B0564}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -59,6 +65,7 @@ Global
 		{5AC4490D-F758-4AC5-8F3A-EB2DC3E43813} = {12DDA201-BC1A-450B-B5A2-40795E3A7949}
 		{F245149A-6F25-4C11-AA6F-25BED0ED393C} = {B2A352C1-9AB6-4861-A69F-42D38AB1A8A8}
 		{A6260F9C-3926-4928-883B-276C93182C37} = {8F08E5B1-E7C8-4111-93B5-919FBCDBDD04}
+		{8FA7CF43-2FC4-4A74-B48B-70D2544B0564} = {B2A352C1-9AB6-4861-A69F-42D38AB1A8A8}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {693351CE-B36D-4664-89A4-E0E7BC33E2E6}

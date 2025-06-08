@@ -12,7 +12,9 @@ namespace Kopilych.Domain
 		public int PiggyBankId { get; set; }
 		public int PiggyBankTypeId { get; set; }
 		public string PhotoPath { get; set; }
+        public int? ExternalId { get; set; }
         public int Version { get; set; }
+        public bool PhotoIntegrated { get; set; }
         public virtual PiggyBankType PiggyBankType { get; set; }
 		public virtual PiggyBank PiggyBank { get; set; }
 	}

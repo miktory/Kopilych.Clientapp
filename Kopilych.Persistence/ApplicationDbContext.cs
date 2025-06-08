@@ -1,6 +1,7 @@
 ﻿using Kopilych.Domain;
 using Kopilych.Persistence.EntityTypeConfigurations;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,7 +12,17 @@ namespace Kopilych.Persistence
 {
 	public class ApplicationDbContext : DbContext
 	{
-		public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) { }
+        public class DateTimeToUtcConverter : ValueConverter<DateTime, DateTime>
+        {
+            public DateTimeToUtcConverter()
+                : base(
+                    v => v.ToUniversalTime(),
+                    v => DateTime.SpecifyKind(v, DateTimeKind.Utc) // явно указываем, что из БД приходит только UTC
+                )
+            { }
+        }
+
+        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) { }
 		public DbSet<User> Users { get; set; }
 		public DbSet<PiggyBank> PiggyBanks { get; set; }
 		public DbSet<UserFriendship> UserFriendships { get; set; }
@@ -22,6 +33,7 @@ namespace Kopilych.Persistence
         public DbSet<UserPiggyBank> UserPiggyBanks { get; set; }
 		public DbSet<PiggyBankCustomization> PiggyBankCustomizations { get; set; }
         public DbSet<PiggyBankType> PiggyBankTypes { get; set; }
+        public DbSet<UserSession> UserSessions { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{
@@ -35,10 +47,19 @@ namespace Kopilych.Persistence
 			modelBuilder.ApplyConfiguration(new PaymentTypeConfiguration());
 			modelBuilder.ApplyConfiguration(new PiggyBankTypeConfiguration());
             modelBuilder.ApplyConfiguration(new PremiumUserConfiguration());
+            modelBuilder.ApplyConfiguration(new UserSessionConfiguration());
+
 
             base.OnModelCreating(modelBuilder);
 		}
 
+        protected override void ConfigureConventions(ModelConfigurationBuilder configurationBuilder)
+{
+    configurationBuilder.Properties<DateTime>()
+        .HaveConversion<DateTimeToUtcConverter>();
+}
+
+      
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseLazyLoadingProxies();

@@ -37,13 +37,13 @@ namespace Kopilych.Application.CQRS.Commands.UserPiggyBank.CreateUserPiggyBank
         {
             // configure max piggy bank links 
 
-            UserDetailsVm invitableUser = await _userInfoService.GetUserDetailsAsync(request.UserId, cancellationToken);
-            PiggyBankVm piggyBank = await _piggyBankService.GetPiggyBankDetailsAsync(request.PiggyBankId, cancellationToken);
+            UserDetailsDTO invitableUser = await _userInfoService.GetUserDetailsAsync(request.UserId, cancellationToken, false);
+            PiggyBankDTO piggyBank = await _piggyBankService.GetPiggyBankDetailsAsync(request.PiggyBankId, cancellationToken, false);
 
 
             if (!request.IsExecuteByAdmin)
             {
-                UserDetailsVm user = await _userInfoService.GetUserDetailsAsync(request.InitiatorUserId, cancellationToken);
+                UserDetailsDTO user = await _userInfoService.GetUserDetailsAsync(request.InitiatorUserId, cancellationToken, false);
                 if (user.Id != piggyBank.OwnerId)
                     throw new AccessDeniedException();
                 if (user.Id != request.UserId)
@@ -70,7 +70,8 @@ namespace Kopilych.Application.CQRS.Commands.UserPiggyBank.CreateUserPiggyBank
                 Updated = DateTime.UtcNow,
                 HideBalance = request.HideBalance,
                 Public = request.Public,
-                Version = 0
+                Version = request.Version,
+                ExternalId = request.ExternalId,
             };
 
             await _repository.AddAsync(upb, cancellationToken);

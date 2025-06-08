@@ -56,7 +56,7 @@ namespace Kopilych.Application.CQRS.Queries.PiggyBankCustomization.GetPiggyBankC
                     if (piggybank.Shared)
                         throw new AccessDeniedException();
 
-                    var friendRequests = await _userInfoService.GetAllUserFriendshipDetailsAsync(request.InitiatorUserId, cancellationToken);
+                    var friendRequests = await _userInfoService.GetAllUserFriendshipDetailsAsync(request.InitiatorUserId, cancellationToken, false);
                     friendRequests = friendRequests.Where(x => x.RequestApproved).ToList();
 
                     foreach (var f in friendRequests)

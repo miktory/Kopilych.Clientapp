@@ -10,5 +10,7 @@ namespace Kopilych.Domain
 	{
 		public int Id { get; set; }
 		public string Name { get; set; }
-	}
+
+        public bool IsPositive { get; set; }
+    }
 }

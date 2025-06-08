@@ -14,12 +14,12 @@ using Kopilych.Domain;
 
 namespace Kopilych.Application.CQRS.Queries.UserFriendship.GetFriendshipDetailsByUserIds
 {
-    public class GetFriendshipDetailsByUserIdsQueryHandler : IRequestHandler<GetFriendshipDetailsByUserIdsQuery, UserFriendshipDetailsVm>
+    public class GetFriendshipDetailsByUserIdsQueryHandler : IRequestHandler<GetFriendshipDetailsByUserIdsQuery, UserFriendshipDetailsDTO>
     {
         private readonly IUserFriendshipRepository _repository;
         private readonly IMapper _mapper;
         public GetFriendshipDetailsByUserIdsQueryHandler(IUserFriendshipRepository repository, IMapper mapper) => (_repository, _mapper) = (repository, mapper);
-        public async Task<UserFriendshipDetailsVm> Handle(GetFriendshipDetailsByUserIdsQuery request, CancellationToken cancellationToken)
+        public async Task<UserFriendshipDetailsDTO> Handle(GetFriendshipDetailsByUserIdsQuery request, CancellationToken cancellationToken)
         {
             var friendship = await _repository.GetBySpecifiedUserIdsAsync(request.FirstUserId, request.SecondUserId, cancellationToken);
             if (friendship == null)
@@ -29,7 +29,7 @@ namespace Kopilych.Application.CQRS.Queries.UserFriendship.GetFriendshipDetailsB
             else if (friendship.InitiatorUserId != request.InitiatorUserId && friendship.ApproverUserId != request.InitiatorUserId && !request.IsExecuteByAdmin)
                 throw new AccessDeniedException();
 
-            var result = _mapper.Map<UserFriendshipDetailsVm>(friendship);
+            var result = _mapper.Map<UserFriendshipDetailsDTO>(friendship);
 
             return result;
         }

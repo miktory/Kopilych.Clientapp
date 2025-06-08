@@ -13,7 +13,7 @@ using Kopilych.Application.Interfaces;
 
 namespace Kopilych.Application.CQRS.Commands.PiggyBank.UpdatePiggyBank
 {
-    public class UpdatePiggyBankCommandHandler : IRequestHandler<UpdatePiggyBankCommand>
+    public class UpdatePiggyBankCommandHandler : IRequestHandler<UpdatePiggyBankCommand, Unit>
     {
         private readonly IPiggyBankRepository _repository;
         private readonly IPiggyBankService _piggyBankService;
@@ -22,7 +22,7 @@ namespace Kopilych.Application.CQRS.Commands.PiggyBank.UpdatePiggyBank
             _repository = repository;
             _piggyBankService = piggyBankService;
         }
-        public async Task Handle(UpdatePiggyBankCommand request, CancellationToken cancellationToken)
+        public async Task<Unit> Handle(UpdatePiggyBankCommand request, CancellationToken cancellationToken)
         {
             var piggybank = await _repository.GetByIdAsync(request.Id, cancellationToken);
             if (piggybank == null)
@@ -50,9 +50,12 @@ namespace Kopilych.Application.CQRS.Commands.PiggyBank.UpdatePiggyBank
             piggybank.Name = request.Name;
             piggybank.GoalDate = request.GoalDate;
             piggybank.Description = request.Description;
+            piggybank.IsDeleted = request.IsDeleted;
+            piggybank.ExternalId = request.ExternalId;
 
 
             await _repository.SaveChangesAsync(cancellationToken);
+            return Unit.Value;
         }
     }
 }

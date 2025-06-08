@@ -10,6 +10,7 @@ namespace Kopilych.Application.Interfaces.Repository
     public interface IPiggyBankRepository
     {
         Task<PiggyBank> GetByIdAsync(int id, CancellationToken ctoken);
+        Task<PiggyBank> GetByExternalIdAsync(int externalId, CancellationToken ctoken);
         Task<IEnumerable<PiggyBank>> GetAllAsync(CancellationToken ctoken);
         Task AddAsync(PiggyBank userPiggyBank, CancellationToken ctoken);
         Task UpdateAsync(PiggyBank userPiggyBank);

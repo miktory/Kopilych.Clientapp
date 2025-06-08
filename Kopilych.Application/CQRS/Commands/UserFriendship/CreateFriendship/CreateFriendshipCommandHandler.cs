@@ -30,8 +30,8 @@ namespace Kopilych.Application.CQRS.Commands.UserFriendship.CreateFriendship
                 throw new AlreadyExistsException();
             if (request.InitiatorUserId == request.ApproverUserId)
                 throw new AlreadyExistsException();
-            var firstUser = await _userInfoService.GetUserDetailsAsync(request.InitiatorUserId, cancellationToken);
-            var secondUser = await _userInfoService.GetUserDetailsAsync(request.ApproverUserId, cancellationToken);
+            var firstUser = await _userInfoService.GetUserDetailsAsync(request.InitiatorUserId, cancellationToken, false);
+            var secondUser = await _userInfoService.GetUserDetailsAsync(request.ApproverUserId, cancellationToken, false);
             friendship = new Domain.UserFriendship
             {
                 InitiatorUserId = request.InitiatorUserId,

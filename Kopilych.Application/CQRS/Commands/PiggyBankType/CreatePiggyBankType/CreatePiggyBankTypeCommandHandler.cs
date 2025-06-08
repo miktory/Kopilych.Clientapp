@@ -39,6 +39,11 @@ namespace Kopilych.Application.CQRS.Commands.PiggyBankType.CreatePiggyBankType
             var pbt = new Domain.PiggyBankType
             {
                 Name = request.Name,
+                Id  = request.Id.HasValue ? request.Id.Value : 0,
+                FirstStatePhotoPath = request.FirstStatePhotoPath,
+                SecondStatePhotoPath   = request.SecondStatePhotoPath,
+                ThirdStatePhotoPath = request.ThirdStatePhotoPath,
+                FourthStatePhotoPath = request.FourthStatePhotoPath,
             };
 
             await _repository.AddAsync(pbt, cancellationToken);

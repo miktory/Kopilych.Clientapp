@@ -17,7 +17,7 @@ using System.Threading.Tasks;
 
 namespace Kopilych.Application.CQRS.Queries.PiggyBank.GetPiggyBank
 {
-    public class GetPiggyBankQueryHandler : IRequestHandler<GetPiggyBankQuery, PiggyBankVm>
+    public class GetPiggyBankQueryHandler : IRequestHandler<GetPiggyBankQuery, PiggyBankDTO>
     {
         private readonly IPiggyBankRepository _repository;
         private readonly IUserInfoService _userInfoService;
@@ -26,7 +26,7 @@ namespace Kopilych.Application.CQRS.Queries.PiggyBank.GetPiggyBank
 
         public GetPiggyBankQueryHandler(IPiggyBankRepository repository, IMapper mapper, IUserInfoService userInfoService, IPiggyBankService piggyBankService)
             => (_repository, _mapper, _userInfoService, _piggyBankService) = (repository, mapper, userInfoService, piggyBankService);
-        public async Task<PiggyBankVm> Handle(GetPiggyBankQuery request, CancellationToken cancellationToken)
+        public async Task<PiggyBankDTO> Handle(GetPiggyBankQuery request, CancellationToken cancellationToken)
         {
             var piggybank = await _repository.GetByIdAsync(request.Id, cancellationToken);
             var hideInfo = true;
@@ -54,7 +54,7 @@ namespace Kopilych.Application.CQRS.Queries.PiggyBank.GetPiggyBank
                     if (piggybank.Shared)
                         throw new AccessDeniedException();
 
-                    var friendRequests = await _userInfoService.GetAllUserFriendshipDetailsAsync(request.InitiatorUserId, cancellationToken);
+                    var friendRequests = await _userInfoService.GetAllUserFriendshipDetailsAsync(request.InitiatorUserId, cancellationToken, false);
                     friendRequests = friendRequests.Where(x => x.RequestApproved).ToList();
 
                     foreach (var f in friendRequests)
@@ -91,7 +91,7 @@ namespace Kopilych.Application.CQRS.Queries.PiggyBank.GetPiggyBank
                     hideInfo = false;
             }
 
-            var vm = _mapper.Map<PiggyBankVm>(piggybank);
+            var vm = _mapper.Map<PiggyBankDTO>(piggybank);
             if (hideInfo && !request.IsExecuteByAdmin && piggybank.OwnerId != request.InitiatorUserId)
             {
                 vm.Balance = 0;

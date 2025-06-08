@@ -40,6 +40,7 @@ namespace Kopilych.Persistence
             services.AddScoped<IPiggyBankTypeRepository, PiggyBankTypeRepository>();
             services.AddScoped<ITransactionTypeRepository, TransactionTypeRepository>();
             services.AddScoped<ITransactionRepository, TransactionRepository>();
+            services.AddScoped<IUserSessionRepository, UserSessionRepository>();
 
             return services;
 		}

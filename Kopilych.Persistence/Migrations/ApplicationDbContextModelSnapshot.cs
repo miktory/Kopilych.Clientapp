@@ -53,11 +53,17 @@ namespace Kopilych.Persistence.Migrations
                         .HasMaxLength(300)
                         .HasColumnType("TEXT");
 
+                    b.Property<int?>("ExternalId")
+                        .HasColumnType("INTEGER");
+
                     b.Property<decimal?>("Goal")
                         .HasColumnType("TEXT");
 
                     b.Property<DateTime?>("GoalDate")
                         .HasColumnType("TEXT");
+
+                    b.Property<bool?>("IsDeleted")
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -89,6 +95,12 @@ namespace Kopilych.Persistence.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<int?>("ExternalId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("PhotoIntegrated")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("PhotoPath")
                         .HasColumnType("TEXT");
 
@@ -117,9 +129,21 @@ namespace Kopilych.Persistence.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<string>("FirstStatePhotoPath")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("FourthStatePhotoPath")
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(30)
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("SecondStatePhotoPath")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("ThirdStatePhotoPath")
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
@@ -166,6 +190,12 @@ namespace Kopilych.Persistence.Migrations
                         .HasMaxLength(200)
                         .HasColumnType("TEXT");
 
+                    b.Property<int?>("ExternalId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool?>("IsDeleted")
+                        .HasColumnType("INTEGER");
+
                     b.Property<int>("PaymentTypeId")
                         .HasColumnType("INTEGER");
 
@@ -203,6 +233,9 @@ namespace Kopilych.Persistence.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<bool>("IsPositive")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(30)
@@ -222,8 +255,11 @@ namespace Kopilych.Persistence.Migrations
                     b.Property<DateTime>("Created")
                         .HasColumnType("TEXT");
 
-                    b.Property<Guid>("ExternalUserGuid")
-                        .HasColumnType("TEXT");
+                    b.Property<int?>("ExternalId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("PhotoIntegrated")
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("PhotoPath")
                         .HasColumnType("TEXT");
@@ -241,7 +277,7 @@ namespace Kopilych.Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ExternalUserGuid")
+                    b.HasIndex("ExternalId")
                         .IsUnique();
 
                     b.ToTable("Users");
@@ -287,6 +323,9 @@ namespace Kopilych.Persistence.Migrations
                     b.Property<DateTime>("Created")
                         .HasColumnType("TEXT");
 
+                    b.Property<int?>("ExternalId")
+                        .HasColumnType("INTEGER");
+
                     b.Property<bool>("HideBalance")
                         .HasColumnType("INTEGER");
 
@@ -312,6 +351,31 @@ namespace Kopilych.Persistence.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("UserPiggyBanks");
+                });
+
+            modelBuilder.Entity("Kopilych.Domain.UserSession", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("AccessToken")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("RefreshToken")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId")
+                        .IsUnique();
+
+                    b.ToTable("UserSessions");
                 });
 
             modelBuilder.Entity("Kopilych.Domain.PiggyBank", b =>
@@ -428,6 +492,17 @@ namespace Kopilych.Persistence.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("Kopilych.Domain.UserSession", b =>
+                {
+                    b.HasOne("Kopilych.Domain.User", "User")
+                        .WithOne("Session")
+                        .HasForeignKey("Kopilych.Domain.UserSession", "UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("Kopilych.Domain.PiggyBank", b =>
                 {
                     b.Navigation("Customization")
@@ -443,6 +518,9 @@ namespace Kopilych.Persistence.Migrations
                     b.Navigation("FriendshipsAsInitiator");
 
                     b.Navigation("PiggyBanks");
+
+                    b.Navigation("Session")
+                        .IsRequired();
 
                     b.Navigation("Transactions");
 

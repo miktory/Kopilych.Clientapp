@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Kopilych.Shared.DTO
 {
-    public class UpdatePiggyBankTypeDTO
+    public class UpdatePaymentTypeDTO
     {
         public string? Name { get; set; }
     }

@@ -17,6 +17,8 @@ namespace Kopilych.Shared.DTO
         private decimal? _balance;
         private int? _version;
         private decimal? _goal;
+        private bool? _isDeleted;
+        private int? _externalId;
 
         [JsonIgnore]
         public List<string> EditedFields { get; set; } = new List<string>();
@@ -53,10 +55,33 @@ namespace Kopilych.Shared.DTO
             get { return _shared; }
             set { _shared = value ?? false; EditedFields.Add(nameof(this.Shared)); }
         }
-        public DateTime? GoalDate 
+
+        public DateTime? GoalDate
         {
-            get { return _goalDate; }
-            set { _goalDate = value; EditedFields.Add(nameof(this.GoalDate)); }
+            get
+            {
+                return _goalDate.HasValue ? _goalDate.Value.ToUniversalTime() : _goalDate;
+            }
+            set
+            {
+                _goalDate = value.HasValue ? value.Value.ToUniversalTime() : value;
+                EditedFields.Add(nameof(this.GoalDate));
+            }
+        }
+        
+
+        [JsonIgnore]
+        public int? ExternalId
+        {
+            get { return _externalId; }
+            set { _externalId = value; EditedFields.Add(nameof(this.ExternalId)); }
+        }
+
+        [JsonIgnore]
+        public bool? IsDeleted
+        {
+            get { return _isDeleted; }
+            set { _isDeleted = value; EditedFields.Add(nameof(this.IsDeleted)); }
         }
     }
 }

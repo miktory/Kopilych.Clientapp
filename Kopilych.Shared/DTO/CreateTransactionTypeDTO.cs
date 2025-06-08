@@ -11,5 +11,7 @@ namespace Kopilych.Shared.DTO
     {
         [Required]
         public string Name { get; set; }
+        [Required]
+        public string IsPositive { get; set; }
     }
 }

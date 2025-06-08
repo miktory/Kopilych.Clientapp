@@ -14,5 +14,8 @@ namespace Kopilych.Application.CQRS.Commands.PiggyBankCustomization.UpdatePiggyB
         public int Version { get; set; }
         public int InitiatorUserId { get; set; }
         public bool IsExecuteByAdmin { get; set; }
+        public string PhotoPath { get; set; }
+        public int? ExternalId { get; set; }
+        public bool PhotoIntegrated { get; set; }
     }
 }

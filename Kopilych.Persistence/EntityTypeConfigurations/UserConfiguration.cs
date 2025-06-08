@@ -14,7 +14,7 @@ namespace Kopilych.Persistence.EntityTypeConfigurations
 		public void Configure(EntityTypeBuilder<User> builder) 
 		{
 			builder.HasKey(u => u.Id);
-			builder.HasIndex(u => u.ExternalUserGuid).IsUnique();
+			builder.HasIndex(u => u.ExternalId).IsUnique();
 			builder.Property(u => u.Username).HasMaxLength(50).IsRequired();
 			builder.Property(u => u.Updated).IsRequired();
 			builder.Property(u => u.Created).IsRequired();

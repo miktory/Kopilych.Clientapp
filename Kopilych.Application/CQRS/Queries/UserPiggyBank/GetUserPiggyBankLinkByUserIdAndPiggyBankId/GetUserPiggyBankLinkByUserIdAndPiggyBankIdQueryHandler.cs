@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 
 namespace Kopilych.Application.CQRS.Queries.UserPiggyBank.GetUserPiggyBankLinkByUserIdAndPiggyBankId
 {
-    public class GetUserPiggyBankLinkByUserIdAndPiggyBankIdQueryHandler : IRequestHandler<GetUserPiggyBankLinkByUserIdAndPiggyBankIdQuery, UserPiggyBankVm>
+    public class GetUserPiggyBankLinkByUserIdAndPiggyBankIdQueryHandler : IRequestHandler<GetUserPiggyBankLinkByUserIdAndPiggyBankIdQuery, UserPiggyBankDTO>
     {
         private readonly IPiggyBankRepository _repository;
         private readonly IUserPiggyBankRepository _upbRepository;
@@ -22,7 +22,7 @@ namespace Kopilych.Application.CQRS.Queries.UserPiggyBank.GetUserPiggyBankLinkBy
         private readonly IUserInfoService _userInfoService;
         public GetUserPiggyBankLinkByUserIdAndPiggyBankIdQueryHandler(IPiggyBankRepository repository, IMapper mapper, IUserPiggyBankRepository upbRepository, IUserInfoService userInfoService)
             => (_repository, _mapper, _upbRepository, _userInfoService) = (repository, mapper, upbRepository, userInfoService);
-        public async Task<UserPiggyBankVm> Handle(GetUserPiggyBankLinkByUserIdAndPiggyBankIdQuery request, CancellationToken cancellationToken)
+        public async Task<UserPiggyBankDTO> Handle(GetUserPiggyBankLinkByUserIdAndPiggyBankIdQuery request, CancellationToken cancellationToken)
         {
             var userPiggyBank = await _upbRepository.GetByUserIdAndPiggyBankIdAsync(request.UserId, request.PiggyBankId, cancellationToken);
             var pbOwner = userPiggyBank == null ? false : userPiggyBank.PiggyBank.OwnerId == request.InitiatorUserId;
@@ -40,7 +40,7 @@ namespace Kopilych.Application.CQRS.Queries.UserPiggyBank.GetUserPiggyBankLinkBy
             if (!pbOwner && !userPiggyBank.Public && !request.IsExecuteByAdmin && request.InitiatorUserId != userPiggyBank.UserId)
                 throw new NotFoundException(nameof(userPiggyBank), $"{request.UserId} {request.PiggyBankId}"); // вместо 403 выбросим 404, чтобы было непонятно: существует ресурс или нет
 
-            var result = _mapper.Map<UserPiggyBankVm>(userPiggyBank);
+            var result = _mapper.Map<UserPiggyBankDTO>(userPiggyBank);
              
             return result;
         }

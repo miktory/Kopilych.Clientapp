@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<popup:Popup xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+              xmlns:popup="clr-namespace:CommunityToolkit.Maui.Views;assembly=CommunityToolkit.Maui"
+              x:Class="Kopilych.Mobile.Views.TransactionInfoPopupView"
+              xmlns:viewmodels="clr-namespace:Kopilych.Mobile.View_Models"
+             xmlns:templateselectors="clr-namespace:Kopilych.Mobile.Views.Data_Template_Selectors"
+             xmlns:sys="clr-namespace:System;assembly=mscorlib"
+             x:Name="TransactionInfoPopup">
+    <popup:Popup.BindingContext>
+        <viewmodels:TransactionInfoPopupViewModel x:Name="ViewModel"/>
+    </popup:Popup.BindingContext>
+
+    <popup:Popup.Resources>
+        <ResourceDictionary>
+            <Style x:Key="DescriptionSwitchStyle" TargetType="Label">
+                <Style.Triggers>
+                    <DataTrigger TargetType="Switch" Binding="{Binding Transaction.Description}" Value="{x:Null}">
+                        <Setter Property="IsToggled" Value="False"/>
+                    </DataTrigger>
+                </Style.Triggers>
+            </Style>
+        </ResourceDictionary>
+    </popup:Popup.Resources>
+    <Grid RowDefinitions="Auto,*,Auto" Padding="25" RowSpacing="15"  ColumnDefinitions="*" HorizontalOptions="StartAndExpand" BackgroundColor="White">
+        <Label   Grid.Row="0" Grid.Column="0" Padding="0" x:Name="TitleLabel" Text="Создание транзакции"  FontFamily="NunitoSemibold" FontSize="20" LineBreakMode="WordWrap" VerticalOptions="Start" HorizontalOptions="Center" />
+        <ScrollView Grid.Row="1"  VerticalOptions="Start" HorizontalOptions="Fill">
+            <StackLayout Padding="0"  Spacing="15" Grid.Row="1" VerticalOptions="Center" IsClippedToBounds="True" HorizontalOptions="Fill">
+
+            <VerticalStackLayout VerticalOptions="Start" HorizontalOptions="Fill">
+                   
+                <VerticalStackLayout VerticalOptions="Start">
+                        <Label Padding="0" Grid.Row="0" TextColor="Gray" HorizontalOptions="StartAndExpand" Text="Сумма" FontFamily="NunitoRegular" FontSize="15" LineBreakMode="WordWrap" />
+                        <Frame Padding="5" Grid.Row="1">
+                            <StackLayout Padding="0" VerticalOptions="Start" >
+                                <Entry x:Name="AmountEntry" TextChanged="AmountEntry_TextChanged" MaxLength="10" Keyboard="Numeric" Placeholder="0" Text="{Binding Transaction.Amount, Mode=TwoWay}"></Entry>
+                            </StackLayout>
+                        </Frame>
+                    </VerticalStackLayout>
+
+                    <VerticalStackLayout VerticalOptions="Start" HorizontalOptions="Fill">
+                        <Label Padding="0" Grid.Row="0" TextColor="Gray" HorizontalOptions="Fill" Text="Тип транзакции" FontFamily="NunitoRegular" FontSize="15" LineBreakMode="WordWrap" />
+                    <Frame Padding="5" Grid.Row="1">
+                        <StackLayout Padding="0" VerticalOptions="Start" >
+                                <Picker x:Name="TransactionTypePicker" ItemsSource="{Binding TransactionTypes, Mode=TwoWay}"  SelectedItem ="{Binding TransactionType, Mode=TwoWay}"></Picker>
+                        </StackLayout>
+                    </Frame>
+                </VerticalStackLayout>
+
+                <VerticalStackLayout VerticalOptions="Start">
+                        <Label Padding="0" Grid.Row="0" TextColor="Gray" HorizontalOptions="StartAndExpand" Text="Тип платежа" FontFamily="NunitoRegular" FontSize="15" LineBreakMode="WordWrap" />
+                    <Frame Padding="5" Grid.Row="1">
+                        <StackLayout Padding="0" VerticalOptions="Start" >
+                            <Picker x:Name="PaymentTypePicker" ItemsSource="{Binding PaymentTypes, Mode=TwoWay}"  SelectedItem ="{Binding PaymentType, Mode=TwoWay}"></Picker>
+                        </StackLayout>
+                    </Frame>
+                </VerticalStackLayout>
+
+                <VerticalStackLayout VerticalOptions="Start">
+                        <Label Padding="0" Grid.Row="0" TextColor="Gray" HorizontalOptions="StartAndExpand" Text="Дата" FontFamily="NunitoRegular" FontSize="15" LineBreakMode="WordWrap" />
+                    <Frame Padding="5" Grid.Row="1">
+                        <StackLayout Padding="0" VerticalOptions="Start" >
+                            <DatePicker Grid.Column="1" Date="{Binding Date, Mode=TwoWay}"></DatePicker>
+                        </StackLayout>
+                    </Frame>
+                </VerticalStackLayout>
+                
+                    <VerticalStackLayout VerticalOptions="Start">
+                        <Label Padding="0" Grid.Row="0" TextColor="Gray" HorizontalOptions="StartAndExpand" Text="Описание" FontFamily="NunitoRegular" FontSize="15" LineBreakMode="NoWrap" />
+                        <Frame Padding="5" Grid.Row="1" >
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Switch Style="{StaticResource DescriptionSwitchStyle}" x:Name="DescriptionSwitch"   Toggled="DescriptionSwitch_Toggled" HorizontalOptions="Start" Grid.Column="0"></Switch>
+                                <Entry Grid.Column="1" MaxLength="200" Text="{Binding Transaction.Description, Mode=TwoWay}" IsEnabled="{Binding Path=IsToggled, Source={x:Reference DescriptionSwitch}}"></Entry>
+                            </Grid>
+                        </Frame>
+                    </VerticalStackLayout>
+
+  
+
+            </VerticalStackLayout>
+
+
+        </StackLayout>
+        </ScrollView >
+        <Grid HorizontalOptions="Fill" BackgroundColor="Transparent" Padding="0" Margin="0,20,0,0" Grid.Row="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <!--<Button x:Name="ButtonPrevious"
+FontFamily="NunitoRegular" 
+                      Margin="0,0,10,0"
+                    CornerRadius="1000"
+                    Grid.Column="0"
+              Text="&lt;"
+              VerticalOptions="End" 
+                    HorizontalOptions="Start"/>-->
+
+
+
+            <Button x:Name="ClosePopupButton" 
+FontFamily="NunitoRegular" 
+                     Grid.Column="1"
+              Text="Закрыть"
+                    BorderWidth="2"
+              Command="{Binding CloseWithNoChangesCommand}" 
+                         BorderColor="Blue"
+              VerticalOptions="End" 
+                    HorizontalOptions="FillAndExpand"/>
+
+            <Button x:Name="SaveChangesButton" 
+FontFamily="NunitoRegular" 
+                     Grid.Column="1"
+              Text="Сохранить"
+                    BorderColor="Blue"
+                    BorderWidth="2"
+              Command="{Binding SaveChangesCommand}" 
+              VerticalOptions="End" 
+                    HorizontalOptions="FillAndExpand"/>
+
+            <!--<Button x:Name="ButtonNext"
+FontFamily="NunitoRegular" 
+                    Margin="10,0,0,0"
+                    Grid.Column="2"
+                     CornerRadius="1000"
+    Text="&gt;"
+    VerticalOptions="End" 
+                        HorizontalOptions="End"
+
+                />-->
+        </Grid>
+    </Grid>
+</popup:Popup>

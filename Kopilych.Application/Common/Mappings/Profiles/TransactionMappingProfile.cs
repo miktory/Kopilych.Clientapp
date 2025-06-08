@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Kopilych.Application.CQRS.Commands.Transaction.CreateTransaction;
 using Kopilych.Domain;
 using Kopilych.Shared.DTO;
 using Kopilych.Shared.View_Models;
@@ -11,16 +12,19 @@ using System.Threading.Tasks;
 
 namespace Kopilych.Application.Common.Mappings.Profiles
 {
-    public class TransactionTypeMappingProfile: Profile
+    public class TransactionMappingProfile: Profile
     {
-        public TransactionTypeMappingProfile()
+        public TransactionMappingProfile()
         {
             Mapping(this);
         }
 
         public void Mapping(Profile profile)
         {
-            profile.CreateMap<TransactionType, TransactionTypeDTO>();
+            profile.CreateMap<Transaction, TransactionDTO>();
+            profile.CreateMap<TransactionDTO, CreateTransactionDTO>();
+            profile.CreateMap<TransactionDTO, UpdateTransactionDTO>();
+            profile.CreateMap<CreateTransactionDTO, CreateTransactionCommand>();
         }
     }
 }

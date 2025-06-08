@@ -12,5 +12,10 @@ namespace Kopilych.Shared.DTO
         [Required]
         public string Name { get; set; }
 
+        public string? FirstStatePhotoPath { get; set; }
+        public string? SecondStatePhotoPath { get; set; }
+        public string? ThirdStatePhotoPath { get; set; }
+        public string? FourthStatePhotoPath { get; set; }
+
     }
 }

@@ -26,7 +26,13 @@ namespace Kopilych.Application
 			{
 				config.AddProfile(new MappingConfiguration(config));
 			});
-			services.AddValidatorsFromAssemblies(new[] { Assembly.GetExecutingAssembly() });
+
+            services.Configure<ApiEndpoints>(cfg.GetSection("ApiEndpoints"));
+            services.AddSingleton<ApiEndpoints>(s => s.GetRequiredService<IOptions<ApiEndpoints>>().Value);
+            services.AddSingleton<IIntegrationService, IntegrationService>();
+
+            services.AddScoped<ISetupWizardService, SetupWizardService>();
+            services.AddValidatorsFromAssemblies(new[] { Assembly.GetExecutingAssembly() });
 			services.AddTransient(typeof(IPipelineBehavior<,>),
 				typeof(ValidationBehavior<,>));
             services.AddTransient(typeof(IPipelineBehavior<,>),
@@ -39,6 +45,9 @@ namespace Kopilych.Application
           typeof(PiggyBankService));
             services.AddTransient(typeof(ITransactionService),
       typeof(TransactionService));
+
+
+
             return services;
 		}
 	}

@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Kopilych.Application.CQRS.Queries.UserFriendship.GetFriendshipDetailsById
 {
-    public  class GetFriendshipDetailsByIdQuery: IRequest<UserFriendshipDetailsVm>
+    public  class GetFriendshipDetailsByIdQuery: IRequest<UserFriendshipDetailsDTO>
     {
         public int Id {  get; set; }
         public int InitiatorUserId { get; set; }

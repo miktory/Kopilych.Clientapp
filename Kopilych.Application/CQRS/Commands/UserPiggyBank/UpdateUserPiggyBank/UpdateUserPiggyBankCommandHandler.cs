@@ -19,7 +19,7 @@ using Kopilych.Application.Interfaces;
 
 namespace Kopilych.Application.CQRS.Commands.UserPiggyBank.UpdateUserPiggyBank
 {
-    public class UpdateUserPiggyBankCommandHandler : IRequestHandler<UpdateUserPiggyBankCommand>
+    public class UpdateUserPiggyBankCommandHandler : IRequestHandler<UpdateUserPiggyBankCommand, Unit>
     {
         private readonly IUserPiggyBankRepository _repository;
         private readonly IUserInfoService _userInfoService;
@@ -33,7 +33,7 @@ namespace Kopilych.Application.CQRS.Commands.UserPiggyBank.UpdateUserPiggyBank
             _userRestrictionsSettings = userRestrictionsSettings;
         }
 
-        public async Task Handle(UpdateUserPiggyBankCommand request, CancellationToken cancellationToken)
+        public async Task<Unit> Handle(UpdateUserPiggyBankCommand request, CancellationToken cancellationToken)
         {
 
             var userPiggyBank = await _repository.GetByIdAsync(request.Id, cancellationToken);
@@ -41,7 +41,7 @@ namespace Kopilych.Application.CQRS.Commands.UserPiggyBank.UpdateUserPiggyBank
                 throw new NotFoundException(nameof(userPiggyBank), $"{request.Id}");
             if (!request.IsExecuteByAdmin) 
             {
-                UserDetailsVm user = await _userInfoService.GetUserDetailsAsync(request.InitiatorUserId, cancellationToken);
+                UserDetailsDTO user = await _userInfoService.GetUserDetailsAsync(request.InitiatorUserId, cancellationToken, false);
                 if (user.Id != userPiggyBank.UserId)
                     throw new AccessDeniedException();
             }
@@ -51,9 +51,10 @@ namespace Kopilych.Application.CQRS.Commands.UserPiggyBank.UpdateUserPiggyBank
             userPiggyBank.HideBalance = request.HideBalance;
             userPiggyBank.Updated = DateTime.UtcNow;
             userPiggyBank.Version = request.Version;
+            userPiggyBank.ExternalId = request.ExternalId;
             await _repository.SaveChangesAsync(cancellationToken);
 
-            return;
+            return Unit.Value;
         }
     }
 }

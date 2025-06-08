@@ -24,7 +24,13 @@ namespace Kopilych.Persistence.Repositories
 			return await _context.PiggyBanks.FindAsync(id, ctoken);
 		}
 
-		public async Task<IEnumerable<PiggyBank>> GetAllAsync(CancellationToken ctoken)
+        public async Task<PiggyBank> GetByExternalIdAsync(int externalId, CancellationToken ctoken)
+        {
+            // Возвращает PiggyBank по идентификатору
+            return await _context.PiggyBanks.FirstOrDefaultAsync(p => p.ExternalId == externalId, ctoken);
+        }
+
+        public async Task<IEnumerable<PiggyBank>> GetAllAsync(CancellationToken ctoken)
 		{
 			// Возвращает все PiggyBank
 			return await _context.PiggyBanks.ToListAsync(ctoken);

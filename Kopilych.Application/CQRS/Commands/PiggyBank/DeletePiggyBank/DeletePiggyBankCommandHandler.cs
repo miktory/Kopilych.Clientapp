@@ -12,11 +12,11 @@ using Kopilych.Application.CQRS.Queries.PiggyBank.GetPiggyBank;
 
 namespace Kopilych.Application.CQRS.Commands.PiggyBank.DeletePiggyBank
 {
-    public class DeletePiggyBankCommandHandler : IRequestHandler<DeletePiggyBankCommand>
+    public class DeletePiggyBankCommandHandler : IRequestHandler<DeletePiggyBankCommand, Unit>
     {
         private readonly IPiggyBankRepository _repository;
         public DeletePiggyBankCommandHandler(IPiggyBankRepository repository) => _repository = repository;
-        public async Task Handle(DeletePiggyBankCommand request, CancellationToken cancellationToken)
+        public async Task<Unit> Handle(DeletePiggyBankCommand request, CancellationToken cancellationToken)
         {
             var piggybank = await _repository.GetByIdAsync(request.Id, cancellationToken);
             if (piggybank == null)
@@ -32,6 +32,7 @@ namespace Kopilych.Application.CQRS.Commands.PiggyBank.DeletePiggyBank
 
             await _repository.DeleteAsync(piggybank);
             await _repository.SaveChangesAsync(cancellationToken);
+            return Unit.Value;
         }
     }
 }

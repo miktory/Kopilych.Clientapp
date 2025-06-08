@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Kopilych.Application.CQRS.Queries.User.GetUserDetailsById
 {
-    public class GetUserDetailsByIdQuery : IRequest<UserDetailsVm>
+    public class GetUserDetailsByIdQuery : IRequest<UserDetailsDTO>
     {
         public int Id { get; set; }
         public int InitiatorUserId { get; set;}

@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<popup:Popup xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+              xmlns:popup="clr-namespace:CommunityToolkit.Maui.Views;assembly=CommunityToolkit.Maui"
+              x:Class="Kopilych.Mobile.Views.CreateOrEditUserPopupView"
+              xmlns:viewmodels="clr-namespace:Kopilych.Mobile.View_Models"
+             CanBeDismissedByTappingOutsideOfPopup="{Binding IsUserExists}">
+    <popup:Popup.Resources>
+        <Style x:Key="TitleLabelStyle" TargetType="Label">
+            <Setter Property="FontFamily" Value="NunitoSemibold"/>
+            <Setter Property="Text" Value="Изменение пользователя"/>
+            <Setter Property="FontSize" Value="19"/>
+            <Style.Triggers>
+                <DataTrigger TargetType="Label" Binding="{Binding IsUserExists}" Value="false">
+                    <Setter Property="Text" Value="Создание пользователя" />
+                    <Setter Property="FontSize" Value="20"/>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+    </popup:Popup.Resources>
+    <Grid Padding="25" VerticalOptions="Center" BackgroundColor="White" RowSpacing="15" ColumnDefinitions="*" RowDefinitions="Auto,*,Auto" >
+        <Label Grid.Row="0" Style="{StaticResource TitleLabelStyle}" Padding="0" x:Name="TitleLabel" Text="Изменение пользователя" LineBreakMode="WordWrap"  HorizontalOptions="CenterAndExpand" />
+        <ScrollView Grid.Row="1" Padding="0" HorizontalOptions="Fill" VerticalOptions="Start">
+            <VerticalStackLayout Padding="0" Spacing="15">
+
+            <Frame HeightRequest="100"
+                   WidthRequest="100"
+                   CornerRadius="1000"
+                   HorizontalOptions="Center"
+                   IsClippedToBounds="True"
+                   Padding="0"
+                   BorderColor="Gray"
+                   Margin="0,0,0,0">
+            <Grid Padding="0">
+                <Image
+                  Aspect="AspectFill"
+                  Source="{Binding UserImageSource}"
+                  HeightRequest="100"
+                  WidthRequest="100"
+                  VerticalOptions="Center"
+                  HorizontalOptions="Center" />
+                <Button ImageSource="photo_picker.svg" BackgroundColor="Transparent" Command="{Binding ChangePhotoCommand}"/>
+            </Grid>
+  
+        </Frame>
+
+
+
+            <Entry Placeholder="Никнейм" MaxLength="50" Text="{Binding Username, Mode=TwoWay}" FontFamily="NunitoRegular" FontSize="15"  />
+            </VerticalStackLayout>
+        </ScrollView>
+        
+        <Button x:Name="CreateOrEditUserButton"
+                FontFamily="NunitoRegular" 
+                Text="Сохранить"
+                Command="{Binding CreateOrEditUserCommand}" 
+                VerticalOptions="End" 
+                Grid.Row="2"/>
+
+    </Grid>
+ </popup:Popup>

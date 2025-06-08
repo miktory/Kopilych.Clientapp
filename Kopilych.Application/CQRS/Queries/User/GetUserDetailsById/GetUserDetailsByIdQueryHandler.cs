@@ -13,14 +13,14 @@ using System.Threading.Tasks;
 
 namespace Kopilych.Application.CQRS.Queries.User.GetUserDetailsById
 {
-    public class GetUserDetailsByIdQueryHandler : IRequestHandler<GetUserDetailsByIdQuery, UserDetailsVm>
+    public class GetUserDetailsByIdQueryHandler : IRequestHandler<GetUserDetailsByIdQuery, UserDetailsDTO>
     {
         private readonly IUserRepository _repository;
         private readonly IUserInfoService _userInfoService;
         private readonly IPiggyBankService _piggyBankService;
         private readonly IMapper _mapper;
         public GetUserDetailsByIdQueryHandler(IUserRepository repository, IMapper mapper, IUserInfoService userInfoService, IPiggyBankService piggyBankService ) => (_repository, _mapper, _userInfoService, _piggyBankService) = (repository, mapper, userInfoService, piggyBankService);
-        public async Task<UserDetailsVm> Handle(GetUserDetailsByIdQuery request, CancellationToken cancellationToken)
+        public async Task<UserDetailsDTO> Handle(GetUserDetailsByIdQuery request, CancellationToken cancellationToken)
         {
             var user = await _repository.GetByIdAsync(request.Id, cancellationToken);
             if (user == null || user.Id != request.Id)
@@ -36,7 +36,7 @@ namespace Kopilych.Application.CQRS.Queries.User.GetUserDetailsById
                     throw new AccessDeniedException();
             }
 
-            return _mapper.Map<UserDetailsVm>(user);
+            return _mapper.Map<UserDetailsDTO>(user);
         }
     }
 }

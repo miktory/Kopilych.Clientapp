@@ -51,7 +51,8 @@ namespace Kopilych.Application.CQRS.Commands.PiggyBank.CreatePiggyBank
                         throw new AccessDeniedException();
                 }
             }
-            var user = await _userInfoService.GetUserDetailsAsync(request.OwnerId, cancellationToken);
+            var user = await _userInfoService.GetUserDetailsAsync(request.OwnerId, cancellationToken, false);
+    
             var piggybank = new Domain.PiggyBank
             {
                 Name = request.Name,
@@ -63,7 +64,8 @@ namespace Kopilych.Application.CQRS.Commands.PiggyBank.CreatePiggyBank
                 GoalDate = request.GoalDate,
                 Shared = request.Shared,
                 OwnerId = request.OwnerId,
-                Version = request.Version
+                Version = request.Version,
+                ExternalId = request.ExternalId
             };
 
             await _repository.AddAsync(piggybank, cancellationToken);

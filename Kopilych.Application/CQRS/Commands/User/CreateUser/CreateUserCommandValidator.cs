@@ -11,7 +11,6 @@ namespace Kopilych.Application.CQRS.Commands.User.CreateUser
     {
         public CreateUserCommandValidator()
         {
-            RuleFor(cmd => cmd.ExternalUserGuid).NotEmpty().NotEqual(Guid.Empty);
             RuleFor(cmd => cmd.Username).NotEmpty().MaximumLength(50);
         }
     }

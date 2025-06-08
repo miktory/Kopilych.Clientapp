@@ -12,6 +12,7 @@ namespace Kopilych.Persistence
 		public static void Initialize(ApplicationDbContext context)
 		{
 			context.Database.Migrate();
+
 		}
 	}
 }

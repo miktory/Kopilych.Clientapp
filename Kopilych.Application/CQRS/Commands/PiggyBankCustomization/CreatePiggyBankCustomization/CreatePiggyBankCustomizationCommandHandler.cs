@@ -28,7 +28,7 @@ namespace Kopilych.Application.CQRS.Commands.PiggyBankCustomization.CreatePiggyB
                 throw new AlreadyExistsException();
             }
 
-            var piggyBank = await _piggyBankService.GetPiggyBankDetailsAsync(request.PiggyBankId, cancellationToken);
+            var piggyBank = await _piggyBankService.GetPiggyBankDetailsAsync(request.PiggyBankId, cancellationToken, false);
             var piggyBankType = await _piggyBankService.GetPiggyBankTypeDetailsAsync(request.PiggyBankTypeId, cancellationToken);
 
             if (!request.IsExecuteByAdmin && piggyBank.OwnerId != request.InitiatorUserId)
@@ -38,7 +38,10 @@ namespace Kopilych.Application.CQRS.Commands.PiggyBankCustomization.CreatePiggyB
             {
                 PiggyBankId = request.PiggyBankId,
                 PiggyBankTypeId = request.PiggyBankTypeId,
-                Version = request.Version
+                Version = request.Version,
+                PhotoPath = request.PhotoPath,
+                ExternalId = request.ExternalId,
+                PhotoIntegrated = request.PhotoIntegrated
             };
 
            await _repository.AddAsync(piggyBankCustomization, cancellationToken);

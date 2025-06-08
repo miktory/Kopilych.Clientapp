@@ -64,14 +64,21 @@ namespace Kopilych.Application.CQRS.Commands.Transaction.DeleteTransaction
 
                 if (!isMember && piggybank.OwnerId != request.InitiatorUserId)
                     throw new AccessDeniedException();
+
+                if (piggybank.Shared && request.UpdatePiggyBankBalance == false) // у групповых копилок всегда обновляем баланс при совершении транзакций
+                    throw new AccessDeniedException();
             }
 
             await _repository.DeleteAsync(transaction);
 
             // необходимо обновлять баланс копилки здесь, т.к. у участников групповой копилки нет доступа к её обновлению напрямую
+            if (request.UpdatePiggyBankBalance)
+            {
+                transaction.PiggyBank.Balance -= transaction.Amount;
+                transaction.PiggyBank.Version += 1;
+                await _piggyBankRepository.UpdateAsync(transaction.PiggyBank);
+            }
 
-            transaction.PiggyBank.Balance -= transaction.Amount;
-            await _piggyBankRepository.UpdateAsync(transaction.PiggyBank);
             await _repository.SaveChangesAsync(cancellationToken);
             await _piggyBankRepository.SaveChangesAsync(cancellationToken);
 

@@ -16,7 +16,7 @@ using System.Threading.Tasks;
 
 namespace Kopilych.Application.CQRS.Queries.UserPiggyBank.GetUserPiggyBankLink
 {
-    public class GetUserPiggyBankLinkQueryHandler : IRequestHandler<GetUserPiggyBankLinkQuery, UserPiggyBankVm>
+    public class GetUserPiggyBankLinkQueryHandler : IRequestHandler<GetUserPiggyBankLinkQuery, UserPiggyBankDTO>
     {
         private readonly IPiggyBankRepository _repository;
         private readonly IUserPiggyBankRepository _upbRepository;
@@ -24,7 +24,7 @@ namespace Kopilych.Application.CQRS.Queries.UserPiggyBank.GetUserPiggyBankLink
         private readonly IMapper _mapper;
         public GetUserPiggyBankLinkQueryHandler(IPiggyBankRepository repository, IMapper mapper, IUserPiggyBankRepository upbRepository, IUserInfoService userInfoService)
             => (_repository, _mapper, _upbRepository, _userInfoService) = (repository, mapper, upbRepository, userInfoService);
-        public async Task<UserPiggyBankVm> Handle(GetUserPiggyBankLinkQuery request, CancellationToken cancellationToken)
+        public async Task<UserPiggyBankDTO> Handle(GetUserPiggyBankLinkQuery request, CancellationToken cancellationToken)
         {
             var userPiggyBank = await _upbRepository.GetByIdAsync(request.Id, cancellationToken);
             var pbOwner = userPiggyBank == null ? false : userPiggyBank.PiggyBank.OwnerId == request.InitiatorUserId;
@@ -43,7 +43,7 @@ namespace Kopilych.Application.CQRS.Queries.UserPiggyBank.GetUserPiggyBankLink
                 throw new NotFoundException(nameof(userPiggyBank), $"{request.Id}"); // вместо 403 выбросим 404, чтобы было непонятно: существует ресурс или нет
 
 
-            var vm = _mapper.Map<UserPiggyBankVm>(userPiggyBank);
+            var vm = _mapper.Map<UserPiggyBankDTO>(userPiggyBank);
              
             return vm;
         }

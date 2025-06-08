@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Kopilych.Domain;
 using Kopilych.Shared;
+using Kopilych.Shared.DTO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,7 +19,8 @@ namespace Kopilych.Application.Common.Mappings.Profiles
 
 		public void Mapping(Profile profile)
 		{
-			profile.CreateMap<User, UserDetailsVm>();
-		}
+			profile.CreateMap<User, UserDetailsDTO>();
+            profile.CreateMap<UserDetailsDTO, UpdateUserDTO>();
+        }
 	}
 }

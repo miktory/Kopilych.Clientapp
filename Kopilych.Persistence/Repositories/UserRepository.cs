@@ -24,10 +24,10 @@ namespace Kopilych.Persistence.Repositories
 			return await _context.Users.FindAsync(id, ctoken);
 		}
 
-		public async Task<User> GetByGuidAsync(Guid guid, CancellationToken ctoken)
+		public async Task<User> GetByExternalIdAsync(int id, CancellationToken ctoken)
 		{
 			// Получает пользователя по GUID
-			return await _context.Users.FirstOrDefaultAsync(u => u.ExternalUserGuid == guid, ctoken);
+			return await _context.Users.FirstOrDefaultAsync(u => u.ExternalId == id, ctoken);
 		}
 
 		public async Task<IEnumerable<User>> GetAllAsync(CancellationToken ctoken)

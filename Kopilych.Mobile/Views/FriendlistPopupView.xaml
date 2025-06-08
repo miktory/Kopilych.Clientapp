@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+              xmlns:popup="clr-namespace:CommunityToolkit.Maui.Views;assembly=CommunityToolkit.Maui"
+              x:Class="Kopilych.Mobile.Views.FriendlistPopupView"
+              xmlns:viewmodels="clr-namespace:Kopilych.Mobile.View_Models"
+              xmlns:views="clr-namespace:Kopilych.Mobile.Views">
+
+    <Grid RowDefinitions="Auto,Auto,Auto,*,Auto" Padding="0" RowSpacing="15"  ColumnDefinitions="*" HorizontalOptions="Fill" BackgroundColor="White">
+        <Grid Grid.Row="0" Padding="0" BackgroundColor="Transparent" HorizontalOptions="Fill">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="0.25*" />
+                <ColumnDefinition Width="0.5*" />
+                <ColumnDefinition Width="0.25*" />
+            </Grid.ColumnDefinitions>
+            <views:BackButtonView BindingContext="{Binding BackButtonViewModel}" WidthRequest="25"
+HeightRequest="25"
+HorizontalOptions="Start"
+VerticalOptions="Center"
+                                Margin="10" Grid.Column="0" IsVisible="True" BackgroundColor="Transparent"/>
+            <Frame Grid.Column="1" Padding="10" BorderColor="Transparent" BackgroundColor="Transparent" HorizontalOptions="Center">
+
+                <Grid Padding="0">
+                    <Frame Padding="0" BackgroundColor="White" BorderColor="Transparent" Grid.Row="0">
+                        <Image x:Name="Logo" Source="logo1.png" WidthRequest="65" HeightRequest="65" Aspect="AspectFit"/>
+                    </Frame>
+                </Grid>
+
+            </Frame>
+        </Grid>
+        <Label Grid.Row="1" Grid.Column="0" Margin="10,0,10,10" x:Name="TitleLabel" Text="Запросы"  FontFamily="NunitoBold" FontAttributes="Bold" FontSize="20" LineBreakMode="WordWrap" VerticalOptions="Start" HorizontalOptions="Center" />
+        <VerticalStackLayout VerticalOptions="Start" Grid.Row="2" HorizontalOptions="Fill" Margin="10,0,10,10">
+            <VerticalStackLayout VerticalOptions="Start" HorizontalOptions="Fill">
+                <Label Padding="0" Grid.Row="0" TextColor="Gray" HorizontalOptions="Fill" Text="Тип" FontFamily="NunitoRegular" FontSize="15" LineBreakMode="WordWrap" />
+                <Frame Padding="5" Grid.Row="1">
+                    <StackLayout Padding="0" VerticalOptions="Start" >
+                        <Picker x:Name="TransactionTypePicker" ItemsSource="{Binding RequestTypeNames, Mode=TwoWay}"  SelectedItem ="{Binding SelectedRequestTypeName, Mode=TwoWay}"></Picker>
+                    </StackLayout>
+                </Frame>
+            </VerticalStackLayout>
+        </VerticalStackLayout>
+        <Frame Grid.Row="3" VerticalOptions="Fill" HorizontalOptions="Fill" Margin="10,0,10,10" Padding="0">
+        <Grid Padding="0" VerticalOptions="Start" HorizontalOptions="Fill"   Grid.Row="2">
+            <RefreshView VerticalOptions="Start" Margin="0" Padding="0" Command="{Binding LoadDataCommand}" IsRefreshing="{Binding IsRefreshing}">
+                <ScrollView VerticalOptions="Start" HorizontalOptions="Fill" Padding="0">
+                <StackLayout Padding="0"  Spacing="15" Grid.Row="1" VerticalOptions="Start" IsClippedToBounds="True" HorizontalOptions="Fill" Margin="10">
+
+
+                <CollectionView HorizontalOptions="Fill" ItemsSource="{Binding DisplayableRequests}">
+                    <CollectionView.ItemsLayout>
+                        <GridItemsLayout Span="1" Orientation="Vertical" VerticalItemSpacing="10"/>
+                    </CollectionView.ItemsLayout>
+                    <CollectionView.ItemTemplate >
+                        <DataTemplate>
+                            <views:UserInfoCardView BindingContext="{Binding .}"/>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+
+                </CollectionView>
+
+
+
+            </StackLayout>
+            </ScrollView >
+        </RefreshView>
+            </Grid>
+        </Frame>
+ 
+        <Grid HorizontalOptions="Fill"  RowDefinitions="Auto" BackgroundColor="Transparent" Padding="0" Margin="10,0,10,10" Grid.Row="4">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <!--<Button x:Name="ButtonPrevious"
+FontFamily="NunitoRegular" 
+                      Margin="0,0,10,0"
+                    CornerRadius="1000"
+                    Grid.Column="0"
+              Text="&lt;"
+              VerticalOptions="End" 
+                    HorizontalOptions="Start"/>-->
+
+                <Button x:Name="CreateRequestButton"  Grid.Row="0" Grid.Column="0"
+
+              Text="+"
+              
+    FontFamily="NunitoBold"
+    FontSize="20"
+    Padding="10"
+    
+    
+                    TextColor="White"
+    LineBreakMode="WordWrap"
+                  
+                    BorderColor="Green"
+    BackgroundColor="ForestGreen"
+                    BorderWidth="2"
+              Command="{Binding AddFriendCommand}" 
+              VerticalOptions="End" 
+                    HorizontalOptions="Fill"/> 
+
+
+            <!--<Button x:Name="ButtonNext"
+FontFamily="NunitoRegular" 
+                    Margin="10,0,0,0"
+                    Grid.Column="2"
+                     CornerRadius="1000"
+    Text="&gt;"
+    VerticalOptions="End" 
+                        HorizontalOptions="End"
+
+                />-->
+        </Grid>
+    </Grid>
+
+</ContentPage>

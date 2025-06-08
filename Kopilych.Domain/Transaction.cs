@@ -13,12 +13,14 @@ namespace Kopilych.Domain
 		public int TransactionTypeId { get; set; }
 		public int PaymentTypeId { get; set; }
 		public int PiggyBankId { get; set; }
-		public decimal Amount { get; set; }
+        public int? ExternalId { get; set; }
+        public decimal Amount { get; set; }
 		public string? Description { get; set; }
 		public DateTime Date { get; set; }
 		public DateTime Created { get; set; }
 		public DateTime Updated { get; set; }
         public int Version { get; set; }
+        public bool? IsDeleted { get; set; }
         public virtual User User { get; set; }
 		public virtual TransactionType TransactionType { get; set; }
 		public virtual PaymentType PaymentType { get; set; }

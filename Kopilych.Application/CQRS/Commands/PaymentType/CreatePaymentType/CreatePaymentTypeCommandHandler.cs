@@ -39,6 +39,7 @@ namespace Kopilych.Application.CQRS.Commands.PaymentType.CreatePaymentType
 
             var pt = new Domain.PaymentType
             {
+                Id = request.Id.HasValue ? request.Id.Value : 0,
                 Name = request.Name,
             };
 

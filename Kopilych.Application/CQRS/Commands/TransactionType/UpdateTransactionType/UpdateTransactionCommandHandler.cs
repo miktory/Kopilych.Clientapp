@@ -25,6 +25,7 @@ namespace Kopilych.Application.CQRS.Commands.TransactionType.UpdateTransactionTy
                 throw new AccessDeniedException();
 
             transactionType.Name = request.Name;
+            transactionType.IsPositive = request.IsPositive;
 
             await _repository.UpdateAsync(transactionType);
             await _repository.SaveChangesAsync(cancellationToken);

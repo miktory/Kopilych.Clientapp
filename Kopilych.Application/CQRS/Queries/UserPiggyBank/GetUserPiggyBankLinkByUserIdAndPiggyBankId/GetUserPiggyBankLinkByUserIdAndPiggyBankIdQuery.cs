@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Kopilych.Application.CQRS.Queries.UserPiggyBank.GetUserPiggyBankLinkByUserIdAndPiggyBankId
 {
-    public class GetUserPiggyBankLinkByUserIdAndPiggyBankIdQuery : IRequest<UserPiggyBankVm>
+    public class GetUserPiggyBankLinkByUserIdAndPiggyBankIdQuery : IRequest<UserPiggyBankDTO>
     {
         public int UserId { get; set; }
         public int PiggyBankId { get; set; }

@@ -9,24 +9,17 @@
     Title="Kopilych.Mobile">
 
     <TabBar>
-        <ShellSection Title="Копилки" Icon="home_icon.png">
+        <ShellSection Title="Копилки" Icon="coin_icon.svg">
             <ShellContent
                 Title="Копилки"
                 ContentTemplate="{DataTemplate views:PiggyBanksGalleryPageView}"
                 Route="PiggyBanksGallery" />
         </ShellSection>
-        <ShellSection Title="Профиль" Icon="home_icon.png">
+        <ShellSection Title="Профиль" Icon="user_icon.svg">
             <ShellContent
          Title="Профиль"
-         ContentTemplate="{DataTemplate views:PiggyBanksGalleryPageView}"
-         Route="MainPage1" />
-        </ShellSection>
-        <ShellSection Title="Тест копилка" Icon="home_icon.png">
-            <ShellContent
-      Title="Тест копилка"
-      ContentTemplate="{DataTemplate views:PiggyBankPageView}"
-               
-      Route="PiggyBankTest" />
+         ContentTemplate="{DataTemplate views:UserSettingsPageView}"
+         Route="UserSettings" />
         </ShellSection>
     </TabBar>
 

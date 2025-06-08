@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<popup:Popup xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+              xmlns:popup="clr-namespace:CommunityToolkit.Maui.Views;assembly=CommunityToolkit.Maui"
+              x:Class="Kopilych.Mobile.Views.PiggyBankInfoPopupView"
+              xmlns:viewmodels="clr-namespace:Kopilych.Mobile.View_Models"
+             xmlns:templateselectors="clr-namespace:Kopilych.Mobile.Views.Data_Template_Selectors"
+             x:Name="PiggyBankInfoPopup">
+
+    <popup:Popup.Resources>
+        <ResourceDictionary>
+            <DataTemplate x:Key="NameStepTemplate">
+                <VerticalStackLayout VerticalOptions="Start">
+                    <Label Padding="0" Grid.Row="0" TextColor="Gray" HorizontalOptions="StartAndExpand" Text="{Binding Title}" FontFamily="NunitoRegular" FontSize="15" LineBreakMode="NoWrap" />
+                    <Frame Padding="5" Grid.Row="1" IsEnabled="{Binding Source={RelativeSource AncestorType={x:Type popup:Popup}}, Path=BindingContext.IsEditMode}">
+                        <StackLayout Padding="0" VerticalOptions="Start" >
+                            <Entry MaxLength="50" Text="{Binding Source={x:Reference Name=PiggyBankInfoPopup}, Path=BindingContext.PiggyBankDetails.Name, Mode=TwoWay}"></Entry>
+                        </StackLayout>
+                    </Frame>
+                </VerticalStackLayout>
+            </DataTemplate>
+
+            <DataTemplate x:Key="CurrentBalanceStepTemplate">
+                <VerticalStackLayout VerticalOptions="Start">
+                    <Label Padding="0" Grid.Row="0" TextColor="Gray" HorizontalOptions="StartAndExpand" Text="{Binding Title}" FontFamily="NunitoRegular" FontSize="15" LineBreakMode="NoWrap" />
+                    <Frame Padding="5" Grid.Row="1" IsEnabled="{Binding Source={RelativeSource AncestorType={x:Type popup:Popup}}, Path=BindingContext.IsEditMode}">
+                        <StackLayout Padding="0" VerticalOptions="Start" >
+                            <Entry x:Name="CurrentBalanceEntry" Keyboard="Numeric" TextChanged="CurrentBalanceEntry_TextChanged" MaxLength="10" IsVisible="{Binding CurrentStep.IsCurrentBalanceStep}" Text="{Binding Source={x:Reference Name=PiggyBankInfoPopup}, Path=BindingContext.PiggyBankDetails.Balance, Mode=TwoWay}"></Entry>
+                        </StackLayout>
+                    </Frame>
+                </VerticalStackLayout>
+            </DataTemplate>
+
+            <DataTemplate x:Key="GoalStepTemplate">
+                <VerticalStackLayout VerticalOptions="Start">
+                    <Label Padding="0" Grid.Row="0" TextColor="Gray" HorizontalOptions="StartAndExpand" Text="{Binding Title}" FontFamily="NunitoRegular" FontSize="15" LineBreakMode="NoWrap" />
+                    <Frame Padding="5" Grid.Row="1" IsEnabled="{Binding Source={RelativeSource AncestorType={x:Type popup:Popup}}, Path=BindingContext.IsEditMode}">
+                        <Grid IsVisible="{Binding CurrentStep.IsGoalStep}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Switch x:Name="GoalSwitch" Grid.Column="0" IsToggled="{Binding IsElementEnabled}" Toggled="GoalSwitch_Toggled"></Switch>
+                            <Entry x:Name="GoalBalanceEntry" TextChanged="CurrentBalanceEntry_TextChanged" Grid.Column="1" MaxLength="10" IsEnabled="{Binding IsElementEnabled}" Keyboard="Numeric" IsVisible="{Binding CurrentStep.IsGoalStep}" Text="{Binding Source={x:Reference Name=PiggyBankInfoPopup}, Path=BindingContext.PiggyBankDetails.Goal, Mode=TwoWay}"></Entry>
+                        </Grid>
+                    </Frame>
+                </VerticalStackLayout>
+            </DataTemplate>
+
+            <DataTemplate x:Key="DescriptionStepTemplate">
+                <VerticalStackLayout VerticalOptions="Start">
+                    <Label Padding="0" Grid.Row="0" TextColor="Gray" HorizontalOptions="StartAndExpand" Text="{Binding Title}" FontFamily="NunitoRegular" FontSize="15" LineBreakMode="NoWrap" />
+                    <Frame Padding="5" Grid.Row="1" IsEnabled="{Binding Source={RelativeSource AncestorType={x:Type popup:Popup}}, Path=BindingContext.IsEditMode}">
+                        <Grid IsVisible="{Binding CurrentStep.IsDescriptionStep}" >
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Switch x:Name="DescriptionSwitch"  Toggled="DescriptionSwitch_Toggled" HorizontalOptions="Start" Grid.Column="0" IsToggled="{Binding IsElementEnabled}"></Switch>
+                            <Entry Grid.Column="1" IsEnabled="{Binding IsElementEnabled}" MaxLength="300" Text="{Binding Source={x:Reference Name=PiggyBankInfoPopup}, Path=BindingContext.PiggyBankDetails.Description, Mode=TwoWay}"></Entry>
+                        </Grid>
+                    </Frame>
+                </VerticalStackLayout>
+            </DataTemplate>
+
+            <DataTemplate x:Key="GoalDateStepTemplate">
+                <VerticalStackLayout VerticalOptions="Start">
+                    <Label Padding="0" Grid.Row="0" TextColor="Gray" HorizontalOptions="StartAndExpand" Text="{Binding Title}" FontFamily="NunitoRegular" FontSize="15" LineBreakMode="NoWrap" />
+                    <Frame Padding="5" Grid.Row="1" IsEnabled="{Binding Source={RelativeSource AncestorType={x:Type popup:Popup}}, Path=BindingContext.IsEditMode}">
+                        <Grid IsVisible="{Binding CurrentStep.IsGoalDateStep}" >
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Switch x:Name="GoalDateSwitch" Toggled="GoalDateSwitch_Toggled" Grid.Column="0" IsToggled="{Binding IsElementEnabled}"></Switch>
+                            <DatePicker Grid.Column="1" IsEnabled="{Binding IsElementEnabled}" Date="{Binding Source={x:Reference Name=PiggyBankInfoPopup}, Path=BindingContext.GoalDate, Mode=TwoWay}"></DatePicker>
+                        </Grid>
+                    </Frame>
+                </VerticalStackLayout>
+            </DataTemplate>
+
+            <DataTemplate x:Key="SharedStepTemplate">
+                <VerticalStackLayout VerticalOptions="Start">
+                    <Label Padding="0" Grid.Row="0" TextColor="Gray" HorizontalOptions="StartAndExpand" Text="{Binding Title}" FontFamily="NunitoRegular" FontSize="15" LineBreakMode="NoWrap" />
+                    <Frame Padding="5" Grid.Row="1" IsEnabled="{Binding Source={RelativeSource AncestorType={x:Type popup:Popup}}, Path=BindingContext.IsEditMode}">
+                        <VerticalStackLayout IsVisible="{Binding CurrentStep.IsSharedStep}" VerticalOptions="Start">
+                            <RadioButton IsChecked="True" HorizontalOptions="Start" Content="Персональная" VerticalOptions="Center" GroupName="SharedOrPersonalSelection"></RadioButton>
+                            <RadioButton IsChecked="{Binding Source={x:Reference Name=PiggyBankInfoPopup}, Path=BindingContext.PiggyBankDetails.Shared, Mode=TwoWay}" HorizontalOptions="Start" Content="Групповая" VerticalOptions="Center" GroupName="SharedOrPersonalSelection"></RadioButton>
+                        </VerticalStackLayout>
+                    </Frame>
+                </VerticalStackLayout>
+            </DataTemplate>
+
+
+            <DataTemplate x:Key="TypeStepTemplate">
+                <VerticalStackLayout VerticalOptions="Start">
+                    <Label Padding="0" Grid.Row="0" TextColor="Gray" HorizontalOptions="StartAndExpand" Text="{Binding Title}" FontFamily="NunitoRegular" FontSize="15" LineBreakMode="NoWrap" />
+                    <Frame Padding="5" Grid.Row="1" IsEnabled="{Binding Source={RelativeSource AncestorType={x:Type popup:Popup}}, Path=BindingContext.IsEditMode}">
+                        <Picker x:Name="PiggyBankTypePicker" IsVisible="{Binding CurrentStep.IsTypeStep}" ItemsSource="{Binding Source={x:Reference Name=PiggyBankInfoPopup}, Path=BindingContext.PiggyBankTypes, Mode=TwoWay}"  SelectedItem ="{Binding Source={x:Reference Name=PiggyBankInfoPopup}, Path=BindingContext.SelectedPiggyBankType, Mode=TwoWay}"></Picker>
+                    </Frame>
+                </VerticalStackLayout>
+            </DataTemplate>
+            <templateselectors:PiggyBankStepDataTemplateSelector x:Key="PiggyBankStepDataTemplateSelector" 
+                                                                 NameStepTemplate="{StaticResource NameStepTemplate}"
+                                                                 DescriptionStepTemplate="{StaticResource DescriptionStepTemplate}"
+                                                                 CurrentBalanceStepTemplate="{StaticResource CurrentBalanceStepTemplate}"
+                                                                 GoalStepTemplate="{StaticResource GoalStepTemplate}"
+                                                                 GoalDateStepTemplate="{StaticResource GoalDateStepTemplate}"
+                                                                 SharedStepTemplate="{StaticResource SharedStepTemplate}"
+                                                                 TypeStepTemplate="{StaticResource TypeStepTemplate}"
+                                                                 />
+            <Style x:Key="TitleLabelStyle" TargetType="Label">
+                <Setter Property="Text" Value="Изменение копилки"/>
+                <Style.Triggers>
+                    <DataTrigger TargetType="Label" Binding="{Binding IsEditMode}" Value="false">
+                        <Setter Property="Text" Value="Просмотр копилки"/>
+                    </DataTrigger>
+                    <DataTrigger TargetType="Label" Binding="{Binding IsEditMode}" Value="true">
+                        <Setter Property="Text" Value="Изменение копилки"/>
+                    </DataTrigger>
+                    <DataTrigger TargetType="Label" Binding="{Binding IsNewPiggyBank}" Value="true">
+                        <Setter Property="Text" Value="Создание копилки"/>
+                    </DataTrigger>
+                </Style.Triggers>
+            </Style>
+        </ResourceDictionary>
+    </popup:Popup.Resources>
+    <Grid Padding="25"  BackgroundColor="White" RowSpacing="15" Grid.Row="0" ColumnDefinitions="*" RowDefinitions="Auto,*,Auto" VerticalOptions="Center">
+        <Label Style="{StaticResource TitleLabelStyle}" Padding="0" x:Name="TitleLabel" Text="Изменение копилки" FontFamily="NunitoSemibold" Grid.Row="0" FontSize="20" LineBreakMode="WordWrap" VerticalOptions="Start" HorizontalOptions="CenterAndExpand" />
+        <ScrollView Grid.Row="1"  VerticalOptions="Start" HorizontalOptions="Fill" Padding="0">
+            <VerticalStackLayout Padding="0" BackgroundColor="Transparent">
+
+            <Frame HeightRequest="100"
+                 WidthRequest="100"
+                 CornerRadius="1000"
+                 HorizontalOptions="Center"
+                 IsClippedToBounds="True"
+                 Padding="0"
+                 BorderColor="Gray"
+                 Margin="0,0,0,0"
+                 Grid.Row="1">
+                <Grid Padding="0">
+                    <Image
+                Aspect="AspectFill"
+                Source="{Binding PiggyBankImageSource}"
+                HeightRequest="100"
+                WidthRequest="100"
+                VerticalOptions="Center"
+                HorizontalOptions="CenterAndExpand" />
+                    <Button BackgroundColor="Transparent" Command="{Binding ChangePhotoCommand}" IsVisible="{Binding IsEditMode}" ImageSource="photo_picker.svg" />
+                </Grid>
+
+            </Frame>
+
+            <!--<StackLayout>
+                        <Entry Placeholder="Название *" MaxLeоngth="50" Text="{Binding Username, Mode=TwoWay}" FontFamily="NunitoRegular" FontSize="15"  />
+                    <Entry Placeholder="Описание" MaxLength="50" Text="{Binding Username, Mode=TwoWay}" FontFamily="NunitoRegular" FontSize="15"  />
+                    <Entry Placeholder="Текущий баланс *" MaxLength="50" Text="{Binding Username, Mode=TwoWay}" FontFamily="NunitoRegular" FontSize="15"  />
+                    <Entry Placeholder="Целевой баланс" MaxLength="50" Text="{Binding Username, Mode=TwoWay}" FontFamily="NunitoRegular" FontSize="15"  />
+                    <Entry Placeholder="Целевая дата" MaxLength="50" Text="{Binding Username, Mode=TwoWay}" FontFamily="NunitoRegular" FontSize="15"  />
+
+                  
+            <Entry Placeholder="Целевая дата" MaxLength="50" Text="{Binding Username, Mode=TwoWay}" FontFamily="NunitoRegular" FontSize="15"  />
+            </StackLayout>-->
+
+            <VerticalStackLayout Padding="0" Grid.Row="2" Spacing="15">
+                <CarouselView x:Name="PiggyBankStepsCarousel" Margin="0,10,0,0" Grid.Column="1" Grid.Row="2" VerticalOptions="Start" ItemsSource="{Binding PiggyBankStepsInfo}" IndicatorView="indicatorView" HeightRequest="130"  ItemTemplate="{StaticResource PiggyBankStepDataTemplateSelector}">
+
+                </CarouselView>
+
+
+                    <IndicatorView Grid.Row="0" x:Name="indicatorView"
+                        HorizontalOptions="Center"
+                        VerticalOptions="End" 
+                       SelectedIndicatorColor="Blue"/>
+            </VerticalStackLayout>
+
+
+
+          
+            </VerticalStackLayout>
+        </ScrollView>
+        <Grid HorizontalOptions="Fill" Grid.Row="2" BackgroundColor="Transparent" VerticalOptions="End" Padding="0" Margin="0,20,0,0" >
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <Button x:Name="ButtonPrevious"
+FontFamily="NunitoRegular" 
+                    Clicked="ButtonPrevious_Clicked"
+                      Margin="0,0,10,0"
+                    CornerRadius="1000"
+                    Grid.Column="0"
+              Text="&lt;"
+              VerticalOptions="End" 
+                    HorizontalOptions="Start"/>
+
+
+
+            <Button x:Name="ClosePopupButton" 
+FontFamily="NunitoRegular" 
+                     Grid.Column="1"
+              Text="Закрыть"
+                    BorderWidth="2"
+               
+              Command="{Binding CloseWithNoChangesCommand}" 
+              VerticalOptions="End" 
+                    HorizontalOptions="FillAndExpand"/>
+
+            <Button x:Name="SaveChangesButton" 
+FontFamily="NunitoRegular" 
+                    IsVisible="{Binding IsEditMode}"
+                     Grid.Column="1"
+              Text="Сохранить"
+       
+                    BorderWidth="2"
+              Command="{Binding SaveChangesCommand}" 
+              VerticalOptions="End" 
+                    HorizontalOptions="FillAndExpand"/>
+
+            <Button x:Name="ButtonNext"
+FontFamily="NunitoRegular" 
+                    Margin="10,0,0,0"
+                    Grid.Column="2"
+                     CornerRadius="1000"
+    Text="&gt;"
+                    Clicked="ButtonNext_Clicked"
+    VerticalOptions="End" 
+                        HorizontalOptions="End"/>
+        </Grid>
+    </Grid>
+
+</popup:Popup>

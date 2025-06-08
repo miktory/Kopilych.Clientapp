@@ -15,22 +15,22 @@ using System.Threading.Tasks;
 
 namespace Kopilych.Application.CQRS.Queries.UserPiggyBank.GetUserPiggyBankLinksByPiggyBankId
 {
-    public class GetUserPiggyBankLinksByPiggyBankIdQueryHandler : IRequestHandler<GetUserPiggyBankLinksByPiggyBankIdQuery, List<UserPiggyBankVm>>
+    public class GetUserPiggyBankLinksByPiggyBankIdQueryHandler : IRequestHandler<GetUserPiggyBankLinksByPiggyBankIdQuery, List<UserPiggyBankDTO>>
     {
         private readonly IPiggyBankRepository _repository;
         private readonly IUserPiggyBankRepository _upbRepository;
         private readonly IMapper _mapper;
         public GetUserPiggyBankLinksByPiggyBankIdQueryHandler(IPiggyBankRepository repository, IMapper mapper, IUserPiggyBankRepository upbRepository)
             => (_repository, _mapper, _upbRepository) = (repository, mapper, upbRepository);
-        public async Task<List<UserPiggyBankVm>> Handle(GetUserPiggyBankLinksByPiggyBankIdQuery request, CancellationToken cancellationToken)
+        public async Task<List<UserPiggyBankDTO>> Handle(GetUserPiggyBankLinksByPiggyBankIdQuery request, CancellationToken cancellationToken)
         {
             var userPiggyBankLinks = await _upbRepository.GetAllForPiggyBankAsync(request.PiggyBankId, cancellationToken);
-            var result = new List<UserPiggyBankVm>();
+            var result = new List<UserPiggyBankDTO>();
             if (!request.IsExecuteByAdmin && userPiggyBankLinks.Where(x => x.UserId == request.InitiatorUserId).Count() == 0)
                 throw new AccessDeniedException();
             foreach (var l in userPiggyBankLinks)
             {
-                var vm = _mapper.Map<UserPiggyBankVm>(l);
+                var vm = _mapper.Map<UserPiggyBankDTO>(l);
                 result.Add(vm);
             }
              

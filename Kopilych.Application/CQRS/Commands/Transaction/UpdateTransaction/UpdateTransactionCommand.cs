@@ -15,9 +15,12 @@ namespace Kopilych.Application.CQRS.Commands.Transaction.UpdateTransaction
 
         public int TransactionTypeId { get; set; }
         public int PaymentTypeId { get; set; }
+        public bool? IsDeleted { get; set; }
+        public int? ExternalId { get; set; }
         public decimal Amount { get; set; }
         public string? Description { get; set; }
         public DateTime Date { get; set; }
         public int Version { get; set; }
+        public bool UpdatePiggyBankBalance { get; set; }
     }
 }

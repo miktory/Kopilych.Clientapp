@@ -21,6 +21,8 @@ namespace Kopilych.Application.Common.Mappings.Profiles
         public void Mapping(Profile profile)
         {
             profile.CreateMap<PiggyBankCustomization, PiggyBankCustomizationDTO>();
+            profile.CreateMap<PiggyBankCustomizationDTO, CreatePiggyBankCustomizationDTO>();
+            profile.CreateMap<PiggyBankCustomizationDTO, UpdatePiggyBankCustomizationDTO>();
         }
     }
 }

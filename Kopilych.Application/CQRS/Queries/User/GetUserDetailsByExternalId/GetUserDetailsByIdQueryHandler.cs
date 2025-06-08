@@ -12,20 +12,20 @@ using System.Threading.Tasks;
 
 namespace Kopilych.Application.CQRS.Queries.User.GetUserDetailsByExternalId
 {
-    public class GetUserDetailsByExternalIdQueryHandler : IRequestHandler<GetUserDetailsByExternalIdQuery, UserDetailsVm>
+    public class GetUserDetailsByExternalIdQueryHandler : IRequestHandler<GetUserDetailsByExternalIdQuery, UserDetailsDTO>
     {
         private readonly IUserRepository _repository;
         private readonly IMapper _mapper;
         public GetUserDetailsByExternalIdQueryHandler(IUserRepository repository, IMapper mapper) => (_repository, _mapper) = (repository, mapper);
-        public async Task<UserDetailsVm> Handle(GetUserDetailsByExternalIdQuery request, CancellationToken cancellationToken)
+        public async Task<UserDetailsDTO> Handle(GetUserDetailsByExternalIdQuery request, CancellationToken cancellationToken)
         {
-            var user = await _repository.GetByGuidAsync(request.ExternalId, cancellationToken);
-            if (user == null || user.ExternalUserGuid != request.ExternalId)
+            var user = await _repository.GetByExternalIdAsync(request.ExternalId, cancellationToken);
+            if (user == null || user.ExternalId != request.ExternalId)
             {
                 throw new NotFoundException(nameof(user), request.ExternalId);
             }
 
-            return _mapper.Map<UserDetailsVm>(user);
+            return _mapper.Map<UserDetailsDTO>(user);
         }
     }
 }

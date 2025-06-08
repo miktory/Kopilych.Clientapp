@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+              xmlns:viewmodels="clr-namespace:Kopilych.Mobile.View_Models"
+             x:Class="Kopilych.Mobile.Views.BackButtonView" >
+    <ContentView.BindingContext>
+        <viewmodels:BackButtonViewModel x:Name="ViewModel" />
+    </ContentView.BindingContext>
+
+    <Grid Padding="0" Grid.Column="0">
+        <Button  BackgroundColor="Transparent"
+     HorizontalOptions="Fill"
+     VerticalOptions="Fill" 
+
+                         Command="{Binding GoBackCommand}"/>
+
+        <Image Source="back.svg" 
+     HorizontalOptions="Fill"
+     VerticalOptions="Fill"
+               Aspect="AspectFit"/>
+    </Grid>
+</ContentView>

@@ -43,7 +43,7 @@ namespace Kopilych.Application.CQRS.Commands.UserPiggyBank.DeleteUserPiggyBank
 
             if (!request.IsExecuteByAdmin)
             {
-                UserDetailsVm user = await _userInfoService.GetUserDetailsAsync(request.InitiatorUserId, cancellationToken);
+                UserDetailsDTO user = await _userInfoService.GetUserDetailsAsync(request.InitiatorUserId, cancellationToken, false);
                 if (user.Id != piggyBank.OwnerId && userPiggyBank.UserId != user.Id)
                     throw new AccessDeniedException();
             }

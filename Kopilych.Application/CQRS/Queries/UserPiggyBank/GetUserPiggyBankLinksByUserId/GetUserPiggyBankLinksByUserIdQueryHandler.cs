@@ -16,7 +16,7 @@ using System.Threading.Tasks;
 
 namespace Kopilych.Application.CQRS.Queries.UserPiggyBank.GetUserPiggyBankLinksByUserId
 {
-    public class GetUserPiggyBankLinksByUserIdQueryHandler : IRequestHandler<GetUserPiggyBankLinksByUserIdQuery, List<UserPiggyBankVm>>
+    public class GetUserPiggyBankLinksByUserIdQueryHandler : IRequestHandler<GetUserPiggyBankLinksByUserIdQuery, List<UserPiggyBankDTO>>
     {
         private readonly IPiggyBankRepository _repository;
         private readonly IUserPiggyBankRepository _upbRepository;
@@ -24,10 +24,10 @@ namespace Kopilych.Application.CQRS.Queries.UserPiggyBank.GetUserPiggyBankLinksB
         private readonly IMapper _mapper;
         public GetUserPiggyBankLinksByUserIdQueryHandler(IPiggyBankRepository repository, IMapper mapper, IUserPiggyBankRepository upbRepository, IUserInfoService userInfoService)
             => (_repository, _mapper, _upbRepository, _userInfoService) = (repository, mapper, upbRepository, userInfoService);
-        public async Task<List<UserPiggyBankVm>> Handle(GetUserPiggyBankLinksByUserIdQuery request, CancellationToken cancellationToken)
+        public async Task<List<UserPiggyBankDTO>> Handle(GetUserPiggyBankLinksByUserIdQuery request, CancellationToken cancellationToken)
         {
             var userPiggyBankLinks = await _upbRepository.GetAllForUserAsync(request.UserId, cancellationToken);
-            var result = new List<UserPiggyBankVm>();
+            var result = new List<UserPiggyBankDTO>();
 
             if (!request.IsExecuteByAdmin && request.InitiatorUserId != request.UserId)
             {
@@ -38,7 +38,7 @@ namespace Kopilych.Application.CQRS.Queries.UserPiggyBank.GetUserPiggyBankLinksB
 
             foreach (var l in userPiggyBankLinks)
             {
-                var vm = _mapper.Map<UserPiggyBankVm>(l);
+                var vm = _mapper.Map<UserPiggyBankDTO>(l);
                 if (!request.IsExecuteByAdmin)
                 {
                     if (!l.Public && request.InitiatorUserId != request.UserId)

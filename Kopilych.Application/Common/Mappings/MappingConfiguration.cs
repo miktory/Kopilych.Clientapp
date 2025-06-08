@@ -28,6 +28,7 @@ namespace Kopilych.Application.Common.Mappings
             cfg.AddProfile<TransactionTypeMappingProfile>();
             cfg.AddProfile<TransactionMappingProfile>();
             cfg.AddProfile<PiggyBankCustomizationMappingProfile>();
+            cfg.AddProfile<UserSessionMappingProfile>();
             // Здесь можно добавить другие профили
         }
     }

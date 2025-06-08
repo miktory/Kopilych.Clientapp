@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Kopilych.Application.CQRS.Commands.PiggyBank.DeletePiggyBank
 {
-    public class DeletePiggyBankCommand : IRequest
+    public class DeletePiggyBankCommand : IRequest<Unit>
     {
         public int Id { get; set; }
         public int InitiatorUserId { get; set; }

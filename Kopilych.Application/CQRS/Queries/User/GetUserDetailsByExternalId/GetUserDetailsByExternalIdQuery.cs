@@ -8,9 +8,9 @@ using System.Threading.Tasks;
 
 namespace Kopilych.Application.CQRS.Queries.User.GetUserDetailsByExternalId
 {
-    public class GetUserDetailsByExternalIdQuery : IRequest<UserDetailsVm>
+    public class GetUserDetailsByExternalIdQuery : IRequest<UserDetailsDTO>
     {
-        public Guid ExternalId { get; set; }
+        public int ExternalId { get; set; }
         // информацию по гуидам получает система. пользователю это не нужно. делать проверки доступа пока не вижу смысла.
     }
 }

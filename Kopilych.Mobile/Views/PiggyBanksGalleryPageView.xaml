@@ -3,51 +3,132 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Kopilych.Mobile.Views.PiggyBanksGalleryPageView"
              xmlns:views="clr-namespace:Kopilych.Mobile.Views"
-             xmlns:models="clr-namespace:Kopilych.Mobile.Models"
+             xmlns:viewmodels="clr-namespace:Kopilych.Mobile.View_Models"
              Title="Копилки">
+    <ContentPage.BindingContext>
+        <viewmodels:PiggyBanksGalleryPageViewModel x:Name="ViewModel"/>
+    </ContentPage.BindingContext>
 
-    <StackLayout  Orientation="Vertical" >
-        <Grid BackgroundColor="White" HorizontalOptions="FillAndExpand">
-            <StackLayout Padding="10" Orientation="Horizontal" BackgroundColor="White"  VerticalOptions="FillAndExpand">
+    <!--<ContentPage.BindingContext>
+        <viewmodels:PiggyBanksGalleryPageViewModel x:Name="ViewModel"/>
+    </ContentPage.BindingContext>-->
+    <ContentPage.Resources>
+        <Style x:Key="TitleLabelStyle" TargetType="Label">
+            <Style.Triggers>
+                <DataTrigger TargetType="Label" Binding="{Binding IsCurrentUser}" Value="false">
+                    <Setter Property="Text" Value="Копилки"/>
+                </DataTrigger>
+                <DataTrigger TargetType="Label" Binding="{Binding IsCurrentUser}" Value="True">
+                    <Setter Property="Text" Value="Мои копилки"/>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+    </ContentPage.Resources>
+    
 
-                <Label Text="Персональные" FontSize="20" HorizontalOptions="Center" VerticalOptions="Center"/>
-                <Frame Margin="10,0,0,0" BackgroundColor="White" BorderColor="White" CornerRadius="100" WidthRequest="30" HeightRequest="30" Padding="5">
-                    <Frame BackgroundColor="White" BorderColor="White" CornerRadius="10000" Padding="0">
-                        <Image x:Name="PersonalPiggyBanksVisibilityImage" Source="expand.svg"/>
+    <Grid Padding="0"  VerticalOptions="StartAndExpand" RowDefinitions="Auto,Auto,Auto, *" BackgroundColor="Transparent">
+        <Grid Grid.Row="0" Padding="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="0.25*" />
+                <ColumnDefinition Width="0.5*" />
+                <ColumnDefinition Width="0.25*" />
+            </Grid.ColumnDefinitions>
+            <views:BackButtonView BindingContext="{Binding BackButtonViewModel}" IsVisible="{Binding IsVisible}"   WidthRequest="25"
+HeightRequest="25"
+HorizontalOptions="Start"
+VerticalOptions="Center"
+                                Margin="10" Grid.Column="0"/>
+            
+            <Frame Grid.Column="1" Padding="10" BorderColor="Transparent" BackgroundColor="Transparent" HorizontalOptions="Center">
 
+                <Grid Padding="0">
+                    <Frame Padding="0" BackgroundColor="White" BorderColor="Transparent" Grid.Row="0">
+                        <Image x:Name="Logo" Source="logo1.png" WidthRequest="65" HeightRequest="65" Aspect="AspectFit"/>
                     </Frame>
-                </Frame>
-            </StackLayout>
-            <Button BackgroundColor="Transparent" Command="{Binding TogglePersonalPiggyBanksVisibility}"></Button>
-        </Grid>
-        <CollectionView ItemsSource="{Binding PiggyBankCardsViewModels}" IsVisible="{Binding IsPersonalPiggyBanksVisible}" BackgroundColor ="Transparent" HorizontalOptions="Fill">
-            <CollectionView.ItemsLayout>
-                <GridItemsLayout Span="2" Orientation="Vertical"/>
-            </CollectionView.ItemsLayout>
-            <CollectionView.ItemTemplate>
-                <DataTemplate>
-                    <views:PiggyBankCardView/>
-                </DataTemplate>
-            </CollectionView.ItemTemplate>
-        </CollectionView>
+                </Grid>
 
-
-
-        <Grid BackgroundColor="White" HorizontalOptions="FillAndExpand">
-            <StackLayout Padding="10" Orientation="Horizontal" BackgroundColor="White"  VerticalOptions="FillAndExpand">
-
-                <Label Text="Групповые" FontSize="20" HorizontalOptions="Center" VerticalOptions="Center"/>
-                <Frame Margin="10,0,0,0" BackgroundColor="White" BorderColor="White" CornerRadius="100" WidthRequest="30" HeightRequest="30" Padding="5">
-                    <Frame BackgroundColor="White" BorderColor="White" CornerRadius="10000" Padding="0">
-                        <Image x:Name="GroupPiggyBanksVisibilityImage" Source="expand.svg"/>
-
-                    </Frame>
-                </Frame>
-            </StackLayout>
-            <Button BackgroundColor="Transparent" Command="{Binding ToggleGroupPiggyBanksVisibility}"></Button>
+            </Frame>
         </Grid>
 
 
-    </StackLayout>
+
+
+
+        <views:UserInfoCardView BindingContext="{Binding UserInfoCardViewModel}" Padding="10,1,10,1" Grid.Row="1"/>
+
+        <StackLayout Padding="0" Spacing="0" Grid.Row="2">
+
+            <Grid BackgroundColor="Transparent" HorizontalOptions="FillAndExpand" Padding="0" Margin="0,0,0,0" VerticalOptions="Start">
+                <StackLayout Padding="0" BackgroundColor="Transparent" Spacing="10" Orientation="Horizontal"  VerticalOptions="FillAndExpand" HorizontalOptions="Center">
+                    <Label Style="{StaticResource TitleLabelStyle}" Text="Мои копилки" FontSize="20" FontFamily="NunitoBold" FontAttributes="Bold" HorizontalOptions="Center" VerticalOptions="Center"/>
+                    <Image x:Name="AddPiggyBank" HorizontalOptions="CenterAndExpand" VerticalOptions="Center" Source="add_element.svg" HeightRequest="20" WidthRequest="20" IsVisible="{Binding IsCurrentUser}"/>
+                </StackLayout>
+                <Button BackgroundColor="Transparent" Command="{Binding CreatePiggyBankCommand}"></Button>
+            </Grid>
+
+        </StackLayout>
+
+        <RefreshView Grid.Row="3" Padding="0" Command="{Binding RefreshDataCommand}" IsRefreshing="{Binding IsRefreshing}">
+            <ScrollView Padding="0">
+
+                <StackLayout BackgroundColor="Transparent">
+                    <StackLayout BackgroundColor="Transparent">
+                        <Grid BackgroundColor="Transparent" HorizontalOptions="FillAndExpand" Margin="10,0,0,0" Grid.Row="1">
+                            <StackLayout Padding="0" Orientation="Horizontal" BackgroundColor="Transparent"  VerticalOptions="FillAndExpand">
+
+                                <Label Text="Персональные" FontSize="16" FontFamily="NunitoRegular" HorizontalOptions="Center" VerticalOptions="Center"/>
+                                <Frame Margin="10,0,0,0" BackgroundColor="Transparent" BorderColor="Transparent" CornerRadius="100" WidthRequest="15" HeightRequest="15" Padding="2" VerticalOptions="Center">
+                                    <Frame BackgroundColor="Transparent" BorderColor="Transparent" CornerRadius="10000" Padding="0">
+                                        <Image x:Name="PersonalPiggyBanksVisibilityImage" Source="expand.svg"/>
+
+                                    </Frame>
+                                </Frame>
+                            </StackLayout>
+                            <Button BackgroundColor="Transparent" Command="{Binding TogglePersonalPiggyBanksVisibilityCommand}"></Button>
+                        </Grid>
+                        <CollectionView ItemsSource="{Binding PersonalPiggyBankCardsViewModels}"  VerticalOptions="Start" IsVisible="{Binding IsPersonalPiggyBanksVisible}" HorizontalOptions="Fill" Grid.Row="1">
+
+                            <CollectionView.ItemsLayout>
+                                <GridItemsLayout Span="1" Orientation="Vertical" VerticalItemSpacing="10"/>
+                            </CollectionView.ItemsLayout>
+                            <CollectionView.ItemTemplate >
+                                <DataTemplate>
+                                    <views:PiggyBankCardView BindingContext="{Binding .}" Padding="10,1,10,1"/>
+                                </DataTemplate>
+                            </CollectionView.ItemTemplate>
+
+                        </CollectionView>
+
+                        <Grid HorizontalOptions="FillAndExpand" Grid.Row="2" BackgroundColor="Transparent" IsVisible="{Binding IsCurrentUser}">
+                            <StackLayout Padding="0" Orientation="Horizontal" BackgroundColor="White" Margin="10,0,0,0"  VerticalOptions="FillAndExpand">
+
+                                <Label Text="Групповые" FontSize="16" FontFamily="NunitoRegular" HorizontalOptions="Center" VerticalOptions="Center"/>
+                                <Frame Margin="10,0,0,0" BackgroundColor="Transparent" BorderColor="Transparent" CornerRadius="100" WidthRequest="15" HeightRequest="15" Padding="2" VerticalOptions="Center">
+                                    <Frame BackgroundColor="Transparent" BorderColor="Transparent" CornerRadius="10000" Padding="0">
+                                        <Image x:Name="GroupPiggyBanksVisibilityImage" Source="expand.svg"/>
+
+                                    </Frame>
+                                </Frame>
+                            </StackLayout>
+                            <Button BackgroundColor="Transparent" Command="{Binding ToggleGroupPiggyBanksVisibilityCommand}"></Button>
+                        </Grid>
+                        <CollectionView ItemsSource="{Binding SharedPiggyBankCardsViewModels}"  VerticalOptions="Start" IsVisible="{Binding IsGroupPiggyBanksVisible}" HorizontalOptions="Fill" Grid.Row="3">
+
+                            <CollectionView.ItemsLayout>
+                                <GridItemsLayout Span="1" Orientation="Vertical" VerticalItemSpacing="10"/>
+                            </CollectionView.ItemsLayout>
+                            <CollectionView.ItemTemplate >
+                                <DataTemplate>
+                                    <views:PiggyBankCardView BindingContext="{Binding .}" Padding="10,1,10,1"/>
+                                </DataTemplate>
+                            </CollectionView.ItemTemplate>
+
+                        </CollectionView>
+                    </StackLayout>
+                </StackLayout>
+            </ScrollView>
+        </RefreshView>
+    </Grid>
+
 
 </ContentPage>

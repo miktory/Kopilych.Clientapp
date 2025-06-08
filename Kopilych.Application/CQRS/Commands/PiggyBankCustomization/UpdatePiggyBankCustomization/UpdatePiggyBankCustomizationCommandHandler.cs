@@ -35,6 +35,9 @@ namespace Kopilych.Application.CQRS.Commands.PiggyBankCustomization.UpdatePiggyB
 
             piggyBankCustomization.Version = request.Version;
             piggyBankCustomization.PiggyBankTypeId = request.PiggyBankTypeId;
+            piggyBankCustomization.PhotoPath = request.PhotoPath;
+            piggyBankCustomization.ExternalId = request.ExternalId;
+            piggyBankCustomization.PhotoIntegrated = request.PhotoIntegrated;
 
             await _repository.UpdateAsync(piggyBankCustomization);
             await _repository.SaveChangesAsync(cancellationToken);

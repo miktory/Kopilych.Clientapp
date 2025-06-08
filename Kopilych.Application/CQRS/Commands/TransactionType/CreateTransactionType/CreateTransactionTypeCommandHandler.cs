@@ -40,6 +40,8 @@ namespace Kopilych.Application.CQRS.Commands.TransactionType.CreateTransactionTy
             var tt = new Domain.TransactionType
             {
                 Name = request.Name,
+                Id = request.Id.HasValue ? request.Id.Value : 0,
+                IsPositive = request.IsPositive,
             };
 
             await _repository.AddAsync(tt, cancellationToken);

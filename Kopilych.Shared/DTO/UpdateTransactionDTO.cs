@@ -16,6 +16,8 @@ namespace Kopilych.Shared.DTO
         private int? _version;
         private int? _paymentTypeId;
         private int? _transactionTypeId;
+        private bool? _isDeleted;
+        private int? _externalId;
 
         [JsonIgnore]
         public List<string> EditedFields { get; set; } = new List<string>();
@@ -48,10 +50,30 @@ namespace Kopilych.Shared.DTO
             get { return _description; }
             set { _description = value; EditedFields.Add(nameof(this.Description)); }
         }
-        public DateTime? Date 
+        public DateTime? Date
         {
-            get { return _date; }
-            set { _date = value; EditedFields.Add(nameof(this.Date)); }
+            get { return _date.HasValue ? _date.Value.ToUniversalTime() : _date; }
+            set
+            {
+                _date = value.HasValue ? value.Value.ToUniversalTime() : value;
+                EditedFields.Add(nameof(this.Date));
+            }
         }
+
+    [JsonIgnore]
+        public bool? IsDeleted
+        {
+            get { return _isDeleted; }
+            set { _isDeleted = value; EditedFields.Add(nameof(this.IsDeleted)); }
+        }
+
+        [JsonIgnore]
+        public int? ExternalId
+        {
+            get { return _externalId; }
+            set { _externalId = value; EditedFields.Add(nameof(this.ExternalId)); }
+        }
+
+
     }
 }

@@ -11,8 +11,9 @@ namespace Kopilych.Application.CQRS.Commands.PiggyBank.CreatePiggyBank
     {
         public CreatePiggyBankCommandValidator()
         {
-            RuleFor(cmd => cmd.Balance).GreaterThanOrEqualTo(0);
+        //    RuleFor(cmd => cmd.Balance).GreaterThanOrEqualTo(0);
             RuleFor(cmd => cmd.Goal).GreaterThanOrEqualTo(0);
+            RuleFor(cmd => cmd.Name).NotEmpty();
         }
     }
 }

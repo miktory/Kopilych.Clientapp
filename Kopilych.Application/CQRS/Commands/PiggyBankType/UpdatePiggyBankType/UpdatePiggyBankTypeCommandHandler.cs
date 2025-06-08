@@ -25,6 +25,10 @@ namespace Kopilych.Application.CQRS.Commands.PiggyBankType.UpdatePiggyBankType
                 throw new AccessDeniedException();
 
             piggyBankType.Name = request.Name;
+            piggyBankType.FirstStatePhotoPath = request.FirstStatePhotoPath;
+            piggyBankType.SecondStatePhotoPath = request.SecondStatePhotoPath;
+            piggyBankType.ThirdStatePhotoPath = request.ThirdStatePhotoPath;
+            piggyBankType.FourthStatePhotoPath = request.FourthStatePhotoPath;
 
             await _repository.UpdateAsync(piggyBankType);
             await _repository.SaveChangesAsync(cancellationToken);

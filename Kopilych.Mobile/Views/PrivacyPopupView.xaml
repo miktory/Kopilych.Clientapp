@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<popup:Popup xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+              xmlns:popup="clr-namespace:CommunityToolkit.Maui.Views;assembly=CommunityToolkit.Maui"
+              x:Class="Kopilych.Mobile.Views.PrivacyPopupView"
+              xmlns:viewmodels="clr-namespace:Kopilych.Mobile.View_Models">
+    <popup:Popup.BindingContext>
+        <viewmodels:PrivacyPopupViewModel/>
+    </popup:Popup.BindingContext>
+    <popup:Popup.Resources>
+        <Style x:Key="TitleLabelStyle" TargetType="Label">
+            <Setter Property="FontFamily" Value="NunitoSemibold"/>
+            <Setter Property="Text" Value="Настройки приватности"/>
+            <Setter Property="FontSize" Value="19"/>
+        </Style>
+    </popup:Popup.Resources>
+    <Grid Padding="25" VerticalOptions="Center" BackgroundColor="White" RowSpacing="15" ColumnDefinitions="*" RowDefinitions="Auto,*,Auto" >
+        <Label Grid.Row="0" Style="{StaticResource TitleLabelStyle}" Padding="0" x:Name="TitleLabel" Text="Настройки приватности" LineBreakMode="WordWrap"  HorizontalOptions="CenterAndExpand" />
+        <ScrollView Grid.Row="1" Padding="0" HorizontalOptions="Fill" VerticalOptions="Start">
+            <VerticalStackLayout Padding="0" Spacing="15">
+                <Grid Padding="0" ColumnSpacing="10" ColumnDefinitions="Auto, *" VerticalOptions="Center">
+                    <CheckBox Grid.Column="0" IsChecked="{Binding Public}" VerticalOptions="Center"/>
+                    <Label Grid.Column="1" Text="Отображать копилку друзьям" VerticalOptions="Center"/>
+                </Grid>
+                <Grid Padding="0" ColumnSpacing="10" ColumnDefinitions="Auto, *" VerticalOptions="Center" HorizontalOptions="Start">
+                    <CheckBox Grid.Column="0" IsChecked="{Binding HideBalance}" VerticalOptions="Center"/>
+                    <Label Grid.Column="1" Text="Скрыть баланс копилки от друзей" VerticalOptions="Center" HorizontalOptions="Start"/>
+                </Grid>
+            </VerticalStackLayout>
+        </ScrollView>
+
+        <Button 
+                FontFamily="NunitoRegular" 
+                Text="Сохранить"
+                Command="{Binding SaveChangesCommand}" 
+                VerticalOptions="End" 
+                Grid.Row="2"/>
+
+    </Grid>
+</popup:Popup>

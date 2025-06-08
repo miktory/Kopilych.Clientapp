@@ -40,10 +40,10 @@ namespace Kopilych.Application.CQRS.Commands.Transaction.CreateTransaction
 
         public async Task<int> Handle(CreateTransactionCommand request, CancellationToken cancellationToken)
         {
-            var piggybank = await _piggyBankService.GetPiggyBankDetailsAsync(request.PiggyBankId, cancellationToken);
+            var piggybank = await _piggyBankService.GetPiggyBankDetailsAsync(request.PiggyBankId, cancellationToken, false);
             var transactionType = await _transactionService.GetTransactionTypeDetailsAsync(request.TransactionTypeId, cancellationToken);
             var paymentType = await _transactionService.GetPaymentTypeDetailsAsync(request.PaymentTypeId, cancellationToken);
-            var user = await _userInfoService.GetUserDetailsAsync(request.UserId, cancellationToken);
+            var user = await _userInfoService.GetUserDetailsAsync(request.UserId, cancellationToken, false);
 
             if (!request.IsExecuteByAdmin)
             {
@@ -65,6 +65,9 @@ namespace Kopilych.Application.CQRS.Commands.Transaction.CreateTransaction
 
                 if (!isMember && piggybank.OwnerId != request.InitiatorUserId)
                     throw new AccessDeniedException();
+
+                if (piggybank.Shared && request.UpdatePiggyBankBalance == false) // у групповых копилок всегда обновляем баланс при совершении транзакций
+                    throw new AccessDeniedException();
             }
 
             var transaction = new Domain.Transaction
@@ -79,6 +82,7 @@ namespace Kopilych.Application.CQRS.Commands.Transaction.CreateTransaction
                 Version = request.Version,
                 UserId = request.UserId,
                 PiggyBankId = request.PiggyBankId,
+                ExternalId = request.ExternalId
             };            
 
             await _repository.AddAsync(transaction, cancellationToken);
@@ -86,9 +90,12 @@ namespace Kopilych.Application.CQRS.Commands.Transaction.CreateTransaction
             // необходимо обновлять баланс копилки здесь, т.к. у участников групповой копилки нет доступа к её обновлению напрямую
 
             var pb = await _piggyBankRepository.GetByIdAsync(request.PiggyBankId, cancellationToken);
-            pb.Balance += transaction.Amount;
-            await _piggyBankRepository.UpdateAsync(pb);
-
+            if (request.UpdatePiggyBankBalance)
+            {
+                pb.Balance += transaction.Amount;
+                transaction.PiggyBank.Version += 1;
+                await _piggyBankRepository.UpdateAsync(pb);
+            }
             await _repository.SaveChangesAsync(cancellationToken);
             await _piggyBankRepository.SaveChangesAsync(cancellationToken);
             return transaction.Id;

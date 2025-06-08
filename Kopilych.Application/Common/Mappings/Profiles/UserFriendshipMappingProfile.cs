@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Kopilych.Domain;
 using Kopilych.Shared;
+using Kopilych.Shared.DTO;
 using Kopilych.Shared.View_Models;
 using System;
 using System.Collections.Generic;
@@ -19,7 +20,8 @@ namespace Kopilych.Application.Common.Mappings.Profiles
 
         public void Mapping(Profile profile)
         {
-            profile.CreateMap<UserFriendship, UserFriendshipDetailsVm>();
+            profile.CreateMap<UserFriendship, UserFriendshipDetailsDTO>();
+            profile.CreateMap<UserFriendshipDetailsDTO, UpdateFriendshipDTO>();
         }
     }
 }

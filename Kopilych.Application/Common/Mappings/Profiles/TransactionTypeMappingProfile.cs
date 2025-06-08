@@ -11,16 +11,16 @@ using System.Threading.Tasks;
 
 namespace Kopilych.Application.Common.Mappings.Profiles
 {
-    public class TransactionMappingProfile: Profile
+    public class TransactionTypeMappingProfile: Profile
     {
-        public TransactionMappingProfile()
+        public TransactionTypeMappingProfile()
         {
             Mapping(this);
         }
 
         public void Mapping(Profile profile)
         {
-            profile.CreateMap<Transaction, TransactionDTO>();
+            profile.CreateMap<TransactionType, TransactionTypeDTO>();
         }
     }
 }

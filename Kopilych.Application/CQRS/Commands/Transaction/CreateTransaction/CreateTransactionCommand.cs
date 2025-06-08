@@ -13,10 +13,12 @@ namespace Kopilych.Application.CQRS.Commands.Transaction.CreateTransaction
         public int TransactionTypeId { get; set; }
         public int PaymentTypeId { get; set; }
         public int PiggyBankId { get; set; }
+        public int? ExternalId { get; set; }
         public decimal Amount { get; set; }
         public string Description { get; set; }
         public int Version {  get; set; }
         public DateTime Date { get; set; }
+        public bool UpdatePiggyBankBalance { get; set; }
 
 
         public int InitiatorUserId { get; set; }

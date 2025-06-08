@@ -5,34 +5,44 @@ namespace Kopilych.Mobile.Views;
 
 public partial class PiggyBanksGalleryPageView : ContentPage
 {
-    public PiggyBanksGalleryPageView()
+    private PiggyBanksGalleryPageViewModel _vm;
+    public PiggyBanksGalleryPageView(PiggyBanksGalleryPageViewModel vm)
     {
         InitializeComponent();
-        BindingContext = new PiggyBanksGalleryPageViewModel();
+        _vm = vm;
+        BindingContext = _vm;
         ((PiggyBanksGalleryPageViewModel)BindingContext).PropertyChanged += PiggyBanksGalleryPageViewModel_OnPropertyChanged;
         PersonalPiggyBanksVisibilityImage.Rotation = 180;
         GroupPiggyBanksVisibilityImage.Rotation = 180;
-
-
-
     }
 
     private async void PiggyBanksGalleryPageViewModel_OnPropertyChanged(object sender, PropertyChangedEventArgs e)
     {
         var viewModel = (PiggyBanksGalleryPageViewModel)sender;
-        var angle = 0;
         switch (e.PropertyName)
         {
             case $"{nameof(PiggyBanksGalleryPageViewModel.IsPersonalPiggyBanksVisible)}":
-                angle = PersonalPiggyBanksVisibilityImage.Rotation >= 180 ? 0 : 180;
-                PersonalPiggyBanksVisibilityImage.RotateTo(angle);
+               if (_vm.IsPersonalPiggyBanksVisible)
+                    PersonalPiggyBanksVisibilityImage.RotateTo(0);
+               else
+                    PersonalPiggyBanksVisibilityImage.RotateTo(180);
                 break;
 
             case $"{nameof(PiggyBanksGalleryPageViewModel.IsGroupPiggyBanksVisible)}":
-                angle = GroupPiggyBanksVisibilityImage.Rotation >= 180 ? 0 : 180;
-                GroupPiggyBanksVisibilityImage.RotateTo(angle);
+                if (_vm.IsGroupPiggyBanksVisible)
+                    GroupPiggyBanksVisibilityImage.RotateTo(0);
+                else
+                    GroupPiggyBanksVisibilityImage.RotateTo(180);
                 break;
         }
 
+    }
+
+    protected override async void OnAppearing()
+    {
+        base.OnAppearing();
+        NavigationPage.SetHasNavigationBar(this, false);
+        await _vm.StartNewbieHelperAsync(CancellationToken.None);
+        _vm.LoadDataAsync(CancellationToken.None); // Вызываем асинхронный метод
     }
 }

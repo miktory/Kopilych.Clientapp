@@ -67,12 +67,18 @@ namespace Kopilych.Application.CQRS.Commands.Transaction.UpdateTransaction
 
                 if (!isMember && piggybank.OwnerId != request.InitiatorUserId)
                     throw new AccessDeniedException();
+
+                if (piggybank.Shared && request.UpdatePiggyBankBalance == false) // у групповых копилок всегда обновляем баланс при совершении транзакций
+                    throw new AccessDeniedException();
             }
 
             var transactionType = await _transactionService.GetTransactionTypeDetailsAsync(request.TransactionTypeId, cancellationToken);
             var paymentType = await _transactionService.GetPaymentTypeDetailsAsync(request.PaymentTypeId, cancellationToken);
 
-            transaction.PiggyBank.Balance -= transaction.Amount;
+            if (request.UpdatePiggyBankBalance)
+            {
+                transaction.PiggyBank.Balance -= transaction.Amount;
+            }
 
             transaction.Updated = DateTime.UtcNow;
             transaction.Version = request.Version;
@@ -81,10 +87,15 @@ namespace Kopilych.Application.CQRS.Commands.Transaction.UpdateTransaction
             transaction.PaymentTypeId = paymentType.Id;
             transaction.TransactionTypeId = transactionType.Id;
             transaction.Description = request.Description;
+            transaction.IsDeleted = request.IsDeleted;
+            transaction.ExternalId = request.ExternalId;
+            if (request.UpdatePiggyBankBalance)
+            {
+                transaction.PiggyBank.Balance += transaction.Amount;
+                transaction.PiggyBank.Version += 1;
+                await _piggyBankRepository.UpdateAsync(transaction.PiggyBank);
+            }
 
-            transaction.PiggyBank.Balance += transaction.Amount;
-
-            await _piggyBankRepository.UpdateAsync(transaction.PiggyBank);
             await _repository.UpdateAsync(transaction);
             await _repository.SaveChangesAsync(cancellationToken);
             await _piggyBankRepository.SaveChangesAsync(cancellationToken);

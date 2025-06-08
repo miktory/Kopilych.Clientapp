@@ -21,10 +21,12 @@ namespace Kopilych.Application.CQRS.Commands.User.CreateUser
             var user = new Domain.User
             {
                 Username = request.Username,
-                ExternalUserGuid = request.ExternalUserGuid,
+                ExternalId = request.ExternalId,
                 Created = DateTime.UtcNow,
                 Updated = DateTime.UtcNow,
-                Version = 0
+                PhotoPath = request.PhotoPath,
+                Version = 0,
+                PhotoIntegrated = request.PhotoIntegrated,
             };
 
             await _repository.AddAsync(user, cancellationToken);

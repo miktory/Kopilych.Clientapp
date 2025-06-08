@@ -12,5 +12,7 @@ namespace Kopilych.Application.CQRS.Commands.Transaction.DeleteTransaction
         public int Id { get; set; }
         public int InitiatorUserId { get; set; }
         public bool IsExecuteByAdmin { get; set; }
+        public bool UpdatePiggyBankBalance { get; set; }
+
     }
 }

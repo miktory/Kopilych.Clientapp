@@ -10,9 +10,12 @@ namespace Kopilych.Application.CQRS.Commands.PiggyBankCustomization.CreatePiggyB
     public class CreatePiggyBankCustomizationCommand : IRequest<int>
     {
         public int PiggyBankId { get; set; }
+        public string? PhotoPath { get; set; }
         public int PiggyBankTypeId { get; set; }
         public int InitiatorUserId { get; set; }
         public bool IsExecuteByAdmin { get; set; }
+        public int? ExternalId { get; set; }
+        public bool PhotoIntegrated { get; set; }
         public int Version { get; set; }
     }
 }

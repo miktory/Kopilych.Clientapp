@@ -4,43 +4,104 @@
              xmlns:viewmodels="clr-namespace:Kopilych.Mobile.View_Models"
              x:Class="Kopilych.Mobile.Views.TransactionView">
 
-    <Frame HeightRequest="90" Padding="0" HasShadow="True" BorderColor="Transparent">
+    <ContentView.Resources>
+        <Style x:Key="TransactionFrameStyle" TargetType="Frame">
+            <Style.Triggers>
+                <DataTrigger TargetType="Frame" Binding="{Binding IsPositiveAmount}" Value="true">
+                    <Setter Property="Background">
+                        <Setter.Value>
+                            <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                                <GradientStop Color="White" Offset="0.4" />
+                                <GradientStop Color="#13BE13" Offset="1" />
+                            </LinearGradientBrush>
+                        </Setter.Value>
+                    </Setter>
+                </DataTrigger>
+                <DataTrigger TargetType="Frame" Binding="{Binding IsPositiveAmount}" Value="false">
+                    <Setter Property="Background">
+                        <Setter.Value>
+                            <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                                <GradientStop Color="White" Offset="0.4" />
+                                <GradientStop Color="#FF0000" Offset="1" />
+                            </LinearGradientBrush>
+                        </Setter.Value>
+                    </Setter>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="TransactionTextLabelStyle" TargetType="Label">
+            <Style.Triggers>
+                <DataTrigger TargetType="Label" Binding="{Binding IsExpanded}" Value="true">
+                    <Setter Property="LineBreakMode" Value="WordWrap"/>
+                </DataTrigger>
+                <DataTrigger TargetType="Label" Binding="{Binding IsExpanded}" Value="false">
+                    <Setter Property="LineBreakMode" Value="TailTruncation"/>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="TransactionTitleLabelStyle" TargetType="Label">
+            <Style.Triggers>
+                <DataTrigger TargetType="Label" Binding="{Binding IsPositiveAmount}" Value="true">
+                    <Setter Property="TextColor" Value="#13BE13"/>
+                </DataTrigger>
+                <DataTrigger TargetType="Label" Binding="{Binding IsPositiveAmount}" Value="false">
+                    <Setter Property="TextColor" Value="#FF0000"/>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+    </ContentView.Resources>
+
+    <Frame Padding="0" HasShadow="True" BorderColor="Transparent" Style="{StaticResource TransactionFrameStyle}" IsVisible="{Binding IsVisible}">
         <Frame.Shadow>
             <Shadow Brush="Black"
           Offset="0,2"
           Radius="10"
           Opacity="0.5" />
         </Frame.Shadow>
-        <Grid Padding="20,10,10,10">
+        <Grid Padding="20,10,10,10" ColumnSpacing="10" RowSpacing="5">
             <Grid.RowDefinitions>
-                <RowDefinition Height="20"/>
+                <RowDefinition Height="Auto"/>
                 <RowDefinition Height="*" />
-                <RowDefinition Height="20" />
+                <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="0.50*"/>
                 <ColumnDefinition Width="0.20*"/>
                 <ColumnDefinition Width="0.30*"/>
             </Grid.ColumnDefinitions>
-            <Label Text="{Binding OperationDescription}" FontFamily="NunitoExtraBold" FontAttributes="Bold" FontSize="14" LineBreakMode="TailTruncation" TextColor="#13BE13" HorizontalOptions="StartAndExpand" Grid.ColumnSpan="2" Grid.Row="0"></Label>
-            <Label Text="{Binding Amount}" LineBreakMode="TailTruncation" FontFamily="NunitoExtraBold" FontAttributes="Bold" FontSize="14" TextColor="#13BE13" HorizontalOptions="EndAndExpand" Grid.Column="2" Grid.Row="0"></Label>
-            <Label Margin="0,5,0,5" FontFamily="NunitoSemiBold" Text="{Binding Description}" LineBreakMode="TailTruncation"   FontSize="10" TextColor="Black" VerticalOptions="StartAndExpand" HorizontalOptions="StartAndExpand" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="1"></Label>
-            <StackLayout IsClippedToBounds="True" Orientation="Horizontal" HorizontalOptions="FillAndExpand" Grid.Column="0" Grid.Row="2" Spacing="5" VerticalOptions="FillAndExpand">
-                <Image Source="{Binding UserPhotoPath}" HeightRequest="20" HorizontalOptions="Start" VerticalOptions="CenterAndExpand"></Image>
-                <Label Text="{Binding Username}" FontFamily="NunitoBold" LineBreakMode="TailTruncation" FontSize="12" HorizontalOptions="StartAndExpand" VerticalOptions="CenterAndExpand" TextColor="White" ></Label>
+            <Button Grid.ColumnSpan="3" Grid.RowSpan="3" BackgroundColor="Transparent" BorderColor="Transparent" Command="{Binding ChangeCardSizeCommand}"/>
+            <Label Text="{Binding OperationDescription}" Style="{StaticResource TransactionTitleLabelStyle}" FontFamily="NunitoExtraBold" FontAttributes="Bold" FontSize="14" TextColor="#13BE13" HorizontalOptions="StartAndExpand" Grid.ColumnSpan="2" Grid.Row="0"></Label>
+            <Label Text="{Binding Amount}" Style="{StaticResource TransactionTitleLabelStyle}" FontFamily="NunitoExtraBold" FontAttributes="Bold" FontSize="14" TextColor="#13BE13" HorizontalOptions="EndAndExpand" Grid.Column="2" Grid.Row="0"></Label>
+
+            <Label Margin="0,5,0,5" Style="{StaticResource TransactionTextLabelStyle}"  FontFamily="NunitoSemiBold" Text="{Binding Description}" LineBreakMode="TailTruncation"   FontSize="10" TextColor="Black" VerticalOptions="StartAndExpand" HorizontalOptions="StartAndExpand" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="1"></Label>
+            <StackLayout IsClippedToBounds="True" Orientation="Horizontal" HorizontalOptions="Start" Grid.Column="0" Grid.Row="2" Spacing="5"  BackgroundColor="Transparent" VerticalOptions="End">
+                <Frame HeightRequest="20"
+ WidthRequest="20"
+ CornerRadius="1000"
+ HorizontalOptions="Center"
+ VerticalOptions="Center"
+ IsClippedToBounds="True"
+ Padding="0"
+ BorderColor="Gray"
+ Margin="0,0,0,0">
+                    <Grid Padding="0">
+                        <Image HeightRequest="20" WidthRequest="20" VerticalOptions="CenterAndExpand" HorizontalOptions="Center"
+Aspect="AspectFill"
+Source="{Binding UserImageSource}" />
+                        <Button BackgroundColor="Transparent" Command="{Binding OpenAvatarCommand}"></Button>
+                    </Grid>
+
+                </Frame>
+                <Label  Style="{StaticResource TransactionTextLabelStyle}" Text="{Binding Username}" FontFamily="NunitoBold"  FontSize="12" HorizontalOptions="StartAndExpand" VerticalOptions="Center" TextColor="White" ></Label>
+
             </StackLayout>
-            <Label Text="{Binding Date}" FontFamily="NunitoBold"  Grid.Column="2" Grid.Row="2" LineBreakMode="TailTruncation" FontSize="12" VerticalOptions="CenterAndExpand" TextColor="White" HorizontalOptions="EndAndExpand"></Label>
-
-
+            <Grid IsClippedToBounds="True" ColumnDefinitions="*,Auto" HorizontalOptions="End" Grid.Column="1" Grid.ColumnSpan="2" Grid.Row="2" ColumnSpacing="5"  BackgroundColor="Transparent" VerticalOptions="End">
+                <Label Style="{StaticResource TransactionTextLabelStyle}"  Text="{Binding Date}" FontFamily="NunitoBold"  Grid.Column="0" Grid.Row="2" FontSize="12" VerticalOptions="Center" TextColor="White" HorizontalOptions="End"></Label>
+                <Button  Command="{Binding MarkTransactionAsDeletedCommand}" IsVisible="{Binding IsDeleteAvailable}" Grid.Row="0" Padding="2"  WidthRequest="20" HeightRequest="20" ImageSource="trashbox.svg" HorizontalOptions="End" BackgroundColor="White" VerticalOptions="Center" Grid.Column="1"></Button>
+            </Grid>
         </Grid>
-        <Frame.Background>
-            <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
-                <GradientStop Color="White" Offset="0.0" />
 
-                <GradientStop Color="White" Offset="0.9" />
-                <!-- Белый цвет сверху -->
-                <GradientStop Color="#13BE13" Offset="1" />
-            </LinearGradientBrush>
-        </Frame.Background>
     </Frame>
 </ContentView>

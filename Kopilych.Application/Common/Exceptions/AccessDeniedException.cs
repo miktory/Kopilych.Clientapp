@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace Kopilych.Application.Common.Exceptions
 {
-	public class AccessDeniedException : Exception
+	public class NotAuthorizedException : Exception
 	{
-		public AccessDeniedException() : base($"The operation is not available for the current access rights state.") {  }
+		public NotAuthorizedException() : base($"Session is not valid.") {  }
 	}
 }

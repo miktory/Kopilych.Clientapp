@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Kopilych.Application.CQRS.Queries.PiggyBank.GetPiggyBank
 {
-    public class GetPiggyBankQuery : IRequest<PiggyBankVm>
+    public class GetPiggyBankQuery : IRequest<PiggyBankDTO>
     {
         public int Id { get; set; }
         public bool IsExecuteByAdmin { get; set; }

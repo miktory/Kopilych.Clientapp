@@ -13,7 +13,8 @@ namespace Kopilych.Domain
 		public int PiggyBankId { get; set; }
 		public bool Public { get; set; }
 		public bool HideBalance { get; set; }
-		public DateTime Created { get; set; }
+        public int? ExternalId { get; set; }
+        public DateTime Created { get; set; }
 		public DateTime Updated { get; set; }
         public int Version { get; set; }
         public virtual User User { get; set; }
